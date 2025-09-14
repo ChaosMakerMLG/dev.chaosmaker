@@ -1,0 +1,21 @@
+node_modules/
+.htaccess
+package*.json
+
+*.php
+!maintenance.php
+
+images/
+projects/
+
+/style/catalog/
+/style/index/
+/style/indexv2/
+
+#Unused files
+
+indexv3.html
+indexv2.html
+indexv1.html
+catalog.html
+panel.html

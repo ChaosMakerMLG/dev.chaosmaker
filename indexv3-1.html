@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/favico.png">
+    <link id="theme" href="style/global_dark.css" rel="stylesheet">
+
+    <link href="style/footer.css" rel="stylesheet">
+    <link href="style/loader.css" rel="stylesheet">
+
+    <link href="style/indexv3/master.css" rel="stylesheet">
+    <link href="style/indexv3/content.css" rel="stylesheet">
+    <link href="style/indexv3/projects-content.css" rel="stylesheet">
+    <title>Hello World!</title>
+</head>
+<body>
+    <div id="loader-master" class="visible">
+        <div id="loader">
+            <div id="bar-wrapper">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="content">
+            <div id="header-wrapper">
+                <h2 id="header">Z zawodu Technik Informatyk, Hobbystycznie Programista...</h2>
+            </div>
+            <div class="terminal-window">
+                <div class="terminal-bar">
+                    <div class="dots-wrapper">
+                        <div onclick="TerminalShake('red');"></div>
+                        <div onclick="TerminalShake()"></div>
+                        <div onclick="TerminalShake()"></div>
+                    </div>
+                    <h5 class="terminal-title"></h5>
+                </div>
+                <div class="inner-content">
+                    <div class="pointer-wrapper">
+                        <p class="cwd" id="cwd"></p>
+                        <p class="pointer">$ </p>
+                        <p id="command-string"></p>
+                        <p id="on-pointer" class="cursor"> </p>
+                    </div>
+                    <input id="hiddenInput" type="text" autocomplete="off" autocorrect="off" spellcheck="false">
+                </div>
+            </div>
+            <!-- <div id="contact-wrapper">
+                <div id="contact-devider-wrapper">
+                    <h4 id="contact-devider-h">Kontakt</h4>
+                </div>
+                <div id="contact-info">
+                    <div id="email">
+                        <a id="email-button" href="mailto:biznes.olszewski@gmail.com"><div class="icons icon-mail"></div><p>Email: </p><p class="data">biznes.olszewski@gmail.com</p></a>        
+                    </div>
+                    <div id="phone-number">
+                        <a id="phone-button" href="tel:+48572023200"><div class="icons icon-phone"></div><p>Telefon</p><p>: +48572023200</p></a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footer-child" id="footer-lang-child">
+            <div id="lang-switch" onclick="NextLang(true);">
+                <i class='bx bx-translate'></i>
+            </div>
+            <div id="lang-wrapper" class="">
+                <div id="pl" class="lang visible"><img class="flags" src="/images/flag-for-flag-poland-svgrepo-com.svg" alt="PL" height="30" width="30"/></div>
+                <div id="en" class="lang"><img class="flags" src="/images/flag-for-flag-united-kingdom-svgrepo-com.svg" alt="EN" height="30" width="30"/></div>
+               <!--  <div id="ja" class="lang"><img class="flags" src="/images/japan-svgrepo-com.svg" alt="JA" height="30" width="30"/></div>
+                <div id="de" class="lang"><img class="flags" src="/images/germany-svgrepo-com.svg" alt="DE" height="30" width="30"/></div>
+                <div id="fr" class="lang"><img class="flags" src="/images/france-svgrepo-com.svg" alt="FR" height="30" width="30"/></div> -->
+            </div>
+        </div>
+        <div class="footer-child" id="footer-theme-child">
+            <div id="theme-switch" onclick="SwitchTheme()">
+                <i id="icon" class="bx bxs-sun-dim"></i>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script/global.js"></script>
+<script src="script/terminal/bash/bash.js"></script>
+<script src="script/terminal/terminal.js"></script>
+<script src="script/index.js"></script>
+<script type="module" src="script/lucide.js"></script>
+</html>

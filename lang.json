@@ -1,0 +1,334 @@
+{
+    "lookup_table":
+    {
+        "0": "pl",
+        "1": "en",
+        "2": "ja",
+        "3": "de",
+        "4": "fr"
+    },
+    "pl":
+    {
+        "index":
+        {
+            "main":
+            {
+                "headline":
+                {
+                    "titles":
+                    [
+                        "Programista",
+                        "Technik IT",
+                        "Kamil Olszewski"
+                    ],
+                    "paragraph": "Z zawodu Technik Informatyk, Hobbystycznie Programista..."
+                },
+                "about":
+                {
+                    "header": "O Mnie",
+                    "paragraph": "Z pasji do samorozwoju postawiłem na zdobycie jak największego zasobu umiejętności. Do moich talentów należą, znajomośc wielu języków programowania m.in. C#, C++ oraz PHP. Znam się także biegle na systemach operacyjnych z rodziny Linux oraz Windows i potrafię zarządzać sieciami komputerowymi."
+                }
+            },
+            "display":
+            {
+                "categories":
+                {
+                    "website":
+                    {
+                        "header": "Strony WWW",
+                        "info":
+                        {
+                            "headers":
+                            {
+                                "libraries": "Biblioteki",
+                                "features": "Funkcje",
+                                "time":
+                                {
+                                    "header": "Czas poświęcony",
+                                    "clause": "*Czas mocno szacowany"
+                                }
+                            },
+                            "notice":
+                            {
+                                "paragraph": "Aby dowiedzieć się więcej na temat tego projektu, skontaktuj sie ze mną tutaj"
+                            }
+                        }
+                    }
+                }
+            },
+            "footer":
+            {
+
+            }
+        },
+        "maintenance":
+        {
+            "headline":
+            {
+                "header": "Strona w konserwacji",
+                "paragraph": "Za kulisami wprowadzane są usprawnienia - Strona będzie dostępna wkrótce.",
+                "notice": 
+                {
+                    "paragraph": "Jeżeli uważasz ze jest to błąd, proszę skontaktuj się ze mną *tutaj*"
+                }
+            }
+        }
+    },
+    "en":
+    {
+        "index":
+        {
+            "main":
+            {
+                "headline":
+                {
+                    "titles":
+                    [
+                        "Programmer",
+                        "IT Technician",
+                        "Kamil Olszewski"
+                    ],
+                    "paragraph": "IT Technician by profession, Programmer as a Hobby..."
+                },
+                "about":
+                {
+                    "header": "About Me",
+                    "paragraph": "From a passion towards self-improvement i made the decision to acquire as many abilities as possible. Amongst my talents there is, familiarity of many programming languages i.a. C#, C++ and PHP. I am also fluently familiar with operating systems from Linux and Windows families, as well as being able to manage computer networks."
+                }
+            },
+            "display":
+            {
+                "categories":
+                {
+                    "website":
+                    {
+                        "header": "Websites",
+                        "info":
+                        {
+                            "headers":
+                            {
+                                "libraries": "Libraries",
+                                "features": "Features",
+                                "time":
+                                {
+                                    "header": "Time spent",
+                                    "clause": "*Time highly estimated"
+                                }
+                            },
+                            "notice":
+                            {
+                                "paragraph": "For additional information about this project, contact me here"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "maintenance":
+        {
+            "headline":
+            {
+                "header": "Website under maintenance",
+                "paragraph": "Upgrades are underway behind the scenes - The website will be back shortly.",
+                "notice": 
+                {
+                    "paragraph": "If you believe this to be an error, please contact me *here*"
+                }
+            }
+        }
+    },
+    "ja":
+    {
+        "index":
+        {
+            "main":
+            {
+                "headline":
+                {
+                    "titles":
+                    [
+                        "Programmer",
+                        "IT Technician",
+                        "Kamil Olszewski"
+                    ],
+                    "paragraph": "IT Technician by profession, Programmer as a Hobby..."
+                },
+                "about":
+                {
+                    "header": "About Me",
+                    "paragraph": "From a passion towards self-improvement i made the decision to acquire as many abilities as possible. Amongst my talents there is, familiarity of many programming languages i.a. C#, C++ and PHP. I am also fluently familiar with operating systems from Linux and Windows families, as well as being able to manage computer networks."
+                }
+            },
+            "display":
+            {
+                "categories":
+                {
+                    "website":
+                    {
+                        "header": "Websites",
+                        "info":
+                        {
+                            "headers":
+                            {
+                                "libraries": "Libraries",
+                                "features": "Features",
+                                "time":
+                                {
+                                    "header": "Time spent",
+                                    "clause": "*Time highly estimated"
+                                }
+                            },
+                            "notice":
+                            {
+                                "paragraph": "For additional information about this project, contact me ",
+                                "keyword": "here"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "maintenance":
+        {
+            "headline":
+            {
+                "header": "ウェブサイトは現在メンテナンス中です",
+                "paragraph": "裏ではアップグレード作業が進行中です - ウェブサイトはまもなく再開されます。",
+                "notice": 
+                {
+                    "paragraph": "これが誤りであるとお考えの場合は、*こちら*までご連絡ください"
+                }
+            }
+        }
+    },
+    "de":
+    {
+        "index":
+        {
+            "main":
+            {
+                "headline":
+                {
+                    "titles":
+                    [
+                        "Programmer",
+                        "IT Technician",
+                        "Kamil Olszewski"
+                    ],
+                    "paragraph": "IT Technician by profession, Programmer as a Hobby..."
+                },
+                "about":
+                {
+                    "header": "About Me",
+                    "paragraph": "From a passion towards self-improvement i made the decision to acquire as many abilities as possible. Amongst my talents there is, familiarity of many programming languages i.a. C#, C++ and PHP. I am also fluently familiar with operating systems from Linux and Windows families, as well as being able to manage computer networks."
+                }
+            },
+            "display":
+            {
+                "categories":
+                {
+                    "website":
+                    {
+                        "header": "Websites",
+                        "info":
+                        {
+                            "headers":
+                            {
+                                "libraries": "Libraries",
+                                "features": "Features",
+                                "time":
+                                {
+                                    "header": "Time spent",
+                                    "clause": "*Time highly estimated"
+                                }
+                            },
+                            "notice":
+                            {
+                                "paragraph": "For additional information about this project, contact me ",
+                                "keyword": "here"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "maintenance":
+        {
+            "headline":
+            {
+                "header": "Website wird derzeit gewartet",
+                "paragraph": "Die Website wird derzeit gewartet. Wir entschuldigen uns für die Unannehmlichkeiten, sie wird in Kürze wieder verfügbar sein.",
+                "notice": 
+                {
+                    "paragraph": "Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie mich bitte ",
+                    "keyword": "hier"
+                }
+            }
+        }
+    },
+    "fr":
+    {
+        "index":
+        {
+            "main":
+            {
+                "headline":
+                {
+                    "titles":
+                    [
+                        "Programmer",
+                        "IT Technician",
+                        "Kamil Olszewski"
+                    ],
+                    "paragraph": "IT Technician by profession, Programmer as a Hobby..."
+                },
+                "about":
+                {
+                    "header": "About Me",
+                    "paragraph": "From a passion towards self-improvement i made the decision to acquire as many abilities as possible. Amongst my talents there is, familiarity of many programming languages i.a. C#, C++ and PHP. I am also fluently familiar with operating systems from Linux and Windows families, as well as being able to manage computer networks."
+                }
+            },
+            "display":
+            {
+                "categories":
+                {
+                    "website":
+                    {
+                        "header": "Websites",
+                        "info":
+                        {
+                            "headers":
+                            {
+                                "libraries": "Libraries",
+                                "features": "Features",
+                                "time":
+                                {
+                                    "header": "Time spent",
+                                    "clause": "*Time highly estimated"
+                                }
+                            },
+                            "notice":
+                            {
+                                "paragraph": "For additional information about this project, contact me ",
+                                "keyword": "here"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "maintenance":
+        {
+            "headline":
+            {
+                "header": "Website under maintenance",
+                "paragraph": "The website is currently under maintenance. Sorry for the invconvienience, it'll be back shortly",
+                "notice": 
+                {
+                    "paragraph": "If you belive this to be an error, please contact me ",
+                    "keyword": "here"
+                }
+            }
+        }
+    }
+}

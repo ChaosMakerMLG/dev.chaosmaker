@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,800;1,800&family=Bungee+Hairline&family=Doto:wght,ROND@100..900,100&family=Just+Me+Again+Down+Here&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@1,200..800&family=Quicksand:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Smooch+Sans:wght@100..900&family=Tsukimi+Rounded&display=swap');
+*{
+    transition: all ease-in 0.2s;
+}
+
+:root {
+    --bg-dark: oklch(0.1 0.01 292);
+    --bg: oklch(0.15 0.01 292);
+    --bg-light: oklch(0.2 0.01 292);
+
+    --text: oklch(0.96 0.02 292);
+    --text-muted: oklch(0.76 0.02 292);
+
+    --highlight: oklch(0.6 0.02 292);
+    --border: oklch(0.3 0.02 292);
+    --border-muted: oklch(0.2 0.02 292);
+
+    --border-cart: solid 1px var(--border);
+    --shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
+    --primary: oklch(0.55 0.15 292);
+    --primary-hover: oklch(0.6 0.15 292);
+    --secondary: oklch(0.76 0.11 112);
+
+    --gradient-bg-direction: 0deg;
+    --gradient-bg: linear-gradient(var(--gradient-bg-direction), var(--bg-dark) 80%, transparent);
+    --gradient: linear-gradient(0deg, var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+
+    --danger: oklch(0.7 0.05 30);
+    --warning: oklch(0.7 0.05 100);
+    --success: oklch(0.7 0.05 160);
+    --info: oklch(0.7 0.05 260);
+
+    --transition-standard: all 0.2s ease;
+    --transition-theme: all 0.2s ease;
+    --lang-html: oklch(0.6 0.08207 195.16);
+    --lang-css: oklch(0.5 0.16037 303.368);
+    --lang-js: oklch(0.8 0.18261 102.094);
+    --lang-php: oklch(0.5923 0.09155 272.038);
+    --lang-cs: oklch(0.55 0.27927 141.446);
+    --lang-cpp: oklch(0.6 0.15576 6.88);
+
+    --before-opacity: 1;
+    --after-opacity: 0;
+    --margin-size: 20%;
+    @media only screen and (max-width: 810px) {
+        --margin-size: 0;
+    }
+
+    /* 
+    
+    #underline-bg 
+    
+    /single side/ linear-gradient(90deg, var(--text) 85%, transparent 100%);
+    /both sides/ radial-gradient(circle, var(--text) 85%, transparent 100%); 
+
+    #misc
+
+    background-image: radial-gradient(circle at center, #9f7aea20 1px, transparent 1px); background-size: 20px 20px;
+    (dotted background)
+    
+    */
+}
+
+body.light {
+    --bg-dark: oklch(0.92 0.01 292);
+    --bg: oklch(0.96 0.01 292);
+    --bg-light: oklch(1 0.01 292);
+
+    --text: oklch(0.15 0.02 292);
+    --text-muted: oklch(0.4 0.02 292);
+
+    --highlight: oklch(1 0.02 292);
+    --border: oklch(0.6 0.02 292);
+    --border-muted: oklch(0.7 0.02 292);
+
+    --border-cart: solid 1px var(--bg);
+    --shadow: oklch(0.72 0.01 292 / 0.4) 0px 2px 4px, oklch(0.62 0.01 292 / 0.3) 0px 7px 13px -3px, oklch(0.52 0.01 292 / 0.2) 0px -3px 0px inset;
+
+
+    --primary: oklch(0.6 0.1 292);
+    --primary-hover: oklch(0.65 0.1 292);
+    --secondary: oklch(0.4 0.1 112);
+
+    --gradient: linear-gradient(0deg, var(--bg), var(--bg-light) 95%);
+    --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+    --box-shadow-muted: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+    --danger: oklch(0.5 0.05 30);
+    --warning: oklch(0.5 0.05 100);
+    --success: oklch(0.5 0.05 160);
+    --info: oklch(0.5 0.05 260);
+
+    --after-opacity: 1;
+    --before-opacity: 0;
+}
+
