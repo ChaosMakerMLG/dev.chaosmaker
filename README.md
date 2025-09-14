@@ -20,6 +20,10 @@
 
 ---
 
+### Preview for the index page im working on can be found under this link
+https://olszewski.ink/indexv3-1.html
+
+
 ## This project features:
 - A poor man's markdown parser written in TypeScript
 - A file system represented via a JSON object with support for:
@@ -33,6 +37,7 @@
 - Laughably small set of commands where half of them don't do shit because the environment is in "read-only" mode
 - Hellishly overcomplicated input method *'because i wanted nice animation'*
 - Extravagantly retarded plain css stylesheet
+
 ---
 
 ## List of the available commands:
