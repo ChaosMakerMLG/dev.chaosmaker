@@ -14,7 +14,7 @@ const PROJECT_CATEGORIES = [
 
 addEventListener("load", () => {
   if(sessionStorage.getItem('intro') === 'played') {
-    SkipIntro();
+    index.SkipIntro();
   }
   setTimeout(() => {
     document.getElementById('loader-master').classList.remove('visible');

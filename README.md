@@ -1,4 +1,4 @@
-### ***Majorily overcomplicated, and overly sophisticated...***
+### ***Majorly overcomplicated, and overly sophisticated...***
 #### Personal portfolio website with an "on-board" **bash** shell emulator written in plain **JS*
 
 ---
@@ -8,19 +8,19 @@
 >The main idea was that the "bash terminal" would serve
 >as the main interface that the user would interact with...
 >
->But then I thought to myself, *`Wouldn't it be cool if it would accually work like a terminal?`* </br>
+>But then I thought to myself, *`Wouldn't it be cool if it would actually work like a terminal?`* </br>
 >...and that's how we got here.
 >
 >The whole environment is in "read-only" mode, meaning any action that would result in changes on the system, </br> 
 >file tree or the environment itself will always return permission denied...
 >
->Never the less, i tried to keep this illusion as close to the real thing as possible.
+>Nevertheless, I tried to keep this illusion as close to the real thing as possible.
 
 *`*Make note that not all features listed below may be implemented when you're seeing this.`*
 
 ---
 
-### Preview for the index page im working on can be found under this link
+### Preview for the index page I'm working on can be found under this link -
 https://olszewski.ink/indexv3-1.html
 
 
@@ -33,9 +33,9 @@ https://olszewski.ink/indexv3-1.html
   - Symlinks
   - User & Group ownership
     
-- A seperate tool written in C# to parse said JSON object from physical folders on the system
+- A separate tool written in C# to parse said JSON object from physical folders on the system
 - Laughably small set of commands where half of them don't do shit because the environment is in "read-only" mode
-- Hellishly overcomplicated input method *'because i wanted nice animation'*
+- Hellishly overcomplicated input method *'because I wanted nice animation'*
 - Extravagantly retarded plain css stylesheet
 
 ---
@@ -67,5 +67,4 @@ https://olszewski.ink/indexv3-1.html
 ---
 
  ![Favicon of the website](/favico.png)
-
 

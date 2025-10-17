@@ -1,0 +1,1509 @@
+{
+  "Name": "root",
+  "Type": 16384,
+  "ReadOnly": false,
+  "Interactible": false,
+  "Func": null,
+  "Children": [
+    {
+      "Name": "run",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:32:03.619+02:00"
+    },
+    {
+      "Name": "dev",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:26:44.616+02:00"
+    },
+    {
+      "Name": "proc",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:34:28.618+02:00"
+    },
+    {
+      "Name": "lost\u002Bfound",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:35:16.617+02:00"
+    },
+    {
+      "Name": "boot",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:28:02.616+02:00"
+    },
+    {
+      "Name": "usr",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:30:53.623+02:00"
+    },
+    {
+      "Name": "etc",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:29:51.616+02:00"
+    },
+    {
+      "Name": "srv",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:22:54.62+02:00"
+    },
+    {
+      "Name": "lib64",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:31:33.617+02:00"
+    },
+    {
+      "Name": "root",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:18:28.61+02:00"
+    },
+    {
+      "Name": "home",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [
+        {
+          "Name": "kamil",
+          "Type": 16384,
+          "ReadOnly": false,
+          "Interactible": false,
+          "Func": null,
+          "Children": [
+            {
+              "Name": ".bash_logout",
+              "Type": 32768,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": null,
+              "Content": "/home/kamil/.bash_logout",
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T18:35:35.74+02:00"
+            },
+            {
+              "Name": ".config",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:41:12.759+02:00"
+            },
+            {
+              "Name": ".bashrc",
+              "Type": 32768,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": null,
+              "Content": "/home/kamil/.bashrc",
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T18:29:56.477+02:00"
+            },
+            {
+              "Name": ".npm",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:35:02.76+02:00"
+            },
+            {
+              "Name": ".bash_profile",
+              "Type": 32768,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": null,
+              "Content": "/home/kamil/.bash_profile",
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T18:29:56.477+02:00"
+            },
+            {
+              "Name": "Videos",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:32:09.757+02:00"
+            },
+            {
+              "Name": ".java",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:33:05.759+02:00"
+            },
+            {
+              "Name": ".cache",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:45:06.758+02:00"
+            },
+            {
+              "Name": "Downloads",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:35:36.756+02:00"
+            },
+            {
+              "Name": ".xinitrc",
+              "Type": 32768,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": null,
+              "Content": "/home/kamil/.xinitrc",
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T18:32:08.743+02:00"
+            },
+            {
+              "Name": "Desktop",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:38:19.756+02:00"
+            },
+            {
+              "Name": ".ssh",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:43:24.761+02:00"
+            },
+            {
+              "Name": ".bash_history",
+              "Type": 32768,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": null,
+              "Content": "/home/kamil/.bash_history",
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": false
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T18:39:03.737+02:00"
+            },
+            {
+              "Name": "Documents",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:34:16.754+02:00"
+            },
+            {
+              "Name": ".cargo",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:32:01.758+02:00"
+            },
+            {
+              "Name": "Projects",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [
+                {
+                  "Name": "Websites",
+                  "Type": 16384,
+                  "ReadOnly": false,
+                  "Interactible": false,
+                  "Func": null,
+                  "Children": [
+                    {
+                      "Name": "This Website",
+                      "Type": 16384,
+                      "ReadOnly": false,
+                      "Interactible": false,
+                      "Func": null,
+                      "Children": [
+                        {
+                          "Name": "about.md",
+                          "Type": 32768,
+                          "ReadOnly": false,
+                          "Interactible": false,
+                          "Func": null,
+                          "Children": null,
+                          "Content": "/home/kamil/Projects/Websites/This Website/about.md",
+                          "Link": null,
+                          "Permission": [
+                            {
+                              "Read": true,
+                              "Write": true,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            }
+                          ],
+                          "Owner": "kamil",
+                          "Group": "users",
+                          "Mtime": "2025-10-08T18:16:12.808+02:00"
+                        }
+                      ],
+                      "Content": null,
+                      "Link": null,
+                      "Permission": [
+                        {
+                          "Read": true,
+                          "Write": true,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        }
+                      ],
+                      "Owner": "kamil",
+                      "Group": "users",
+                      "Mtime": "2025-10-08T18:32:59.473+02:00"
+                    },
+                    {
+                      "Name": "Sheepo",
+                      "Type": 16384,
+                      "ReadOnly": false,
+                      "Interactible": false,
+                      "Func": null,
+                      "Children": [
+                        {
+                          "Name": "about.md",
+                          "Type": 32768,
+                          "ReadOnly": false,
+                          "Interactible": false,
+                          "Func": null,
+                          "Children": null,
+                          "Content": "/home/kamil/Projects/Websites/Sheepo/about.md",
+                          "Link": null,
+                          "Permission": [
+                            {
+                              "Read": true,
+                              "Write": true,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            }
+                          ],
+                          "Owner": "kamil",
+                          "Group": "users",
+                          "Mtime": "2025-10-08T18:16:12.808+02:00"
+                        }
+                      ],
+                      "Content": null,
+                      "Link": null,
+                      "Permission": [
+                        {
+                          "Read": true,
+                          "Write": true,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        }
+                      ],
+                      "Owner": "kamil",
+                      "Group": "users",
+                      "Mtime": "2025-10-08T19:05:36.346+02:00"
+                    },
+                    {
+                      "Name": "SchoolProjectManager",
+                      "Type": 16384,
+                      "ReadOnly": false,
+                      "Interactible": false,
+                      "Func": null,
+                      "Children": [
+                        {
+                          "Name": "about.md",
+                          "Type": 32768,
+                          "ReadOnly": false,
+                          "Interactible": false,
+                          "Func": null,
+                          "Children": null,
+                          "Content": "/home/kamil/Projects/Websites/SchoolProjectManager/about.md",
+                          "Link": null,
+                          "Permission": [
+                            {
+                              "Read": true,
+                              "Write": true,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            },
+                            {
+                              "Read": true,
+                              "Write": false,
+                              "Exec": false
+                            }
+                          ],
+                          "Owner": "kamil",
+                          "Group": "users",
+                          "Mtime": "2025-10-08T18:16:12.808+02:00"
+                        }
+                      ],
+                      "Content": null,
+                      "Link": null,
+                      "Permission": [
+                        {
+                          "Read": true,
+                          "Write": true,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        },
+                        {
+                          "Read": true,
+                          "Write": false,
+                          "Exec": true
+                        }
+                      ],
+                      "Owner": "kamil",
+                      "Group": "users",
+                      "Mtime": "2025-10-08T19:06:20.346+02:00"
+                    }
+                  ],
+                  "Content": null,
+                  "Link": null,
+                  "Permission": [
+                    {
+                      "Read": true,
+                      "Write": true,
+                      "Exec": true
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": true
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": true
+                    }
+                  ],
+                  "Owner": "kamil",
+                  "Group": "users",
+                  "Mtime": "2025-10-08T18:20:28.475+02:00"
+                },
+                {
+                  "Name": "C#",
+                  "Type": 16384,
+                  "ReadOnly": false,
+                  "Interactible": false,
+                  "Func": null,
+                  "Children": [],
+                  "Content": null,
+                  "Link": null,
+                  "Permission": [
+                    {
+                      "Read": true,
+                      "Write": true,
+                      "Exec": true
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": true
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": true
+                    }
+                  ],
+                  "Owner": "kamil",
+                  "Group": "users",
+                  "Mtime": "2025-10-08T18:14:10.488+02:00"
+                }
+              ],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-10-08T18:27:36.483+02:00"
+            },
+            {
+              "Name": ".local",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:32:33.76+02:00"
+            },
+            {
+              "Name": "Pictures",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:45:43.757+02:00"
+            },
+            {
+              "Name": ".var",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:40:28.761+02:00"
+            },
+            {
+              "Name": "Music",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [
+                {
+                  "Name": "nggyu.lrc",
+                  "Type": 32768,
+                  "ReadOnly": false,
+                  "Interactible": false,
+                  "Func": null,
+                  "Children": null,
+                  "Content": "/home/kamil/Music/nggyu.lrc",
+                  "Link": null,
+                  "Permission": [
+                    {
+                      "Read": true,
+                      "Write": true,
+                      "Exec": false
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": false
+                    },
+                    {
+                      "Read": true,
+                      "Write": false,
+                      "Exec": false
+                    }
+                  ],
+                  "Owner": "kamil",
+                  "Group": "users",
+                  "Mtime": "2025-09-14T03:31:38.952+02:00"
+                }
+              ],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-10-08T18:10:56.493+02:00"
+            },
+            {
+              "Name": ".dotnet",
+              "Type": 16384,
+              "ReadOnly": false,
+              "Interactible": false,
+              "Func": null,
+              "Children": [],
+              "Content": null,
+              "Link": null,
+              "Permission": [
+                {
+                  "Read": true,
+                  "Write": true,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                },
+                {
+                  "Read": true,
+                  "Write": false,
+                  "Exec": true
+                }
+              ],
+              "Owner": "kamil",
+              "Group": "users",
+              "Mtime": "2025-09-13T14:44:34.76+02:00"
+            }
+          ],
+          "Content": null,
+          "Link": null,
+          "Permission": [
+            {
+              "Read": true,
+              "Write": true,
+              "Exec": true
+            },
+            {
+              "Read": true,
+              "Write": false,
+              "Exec": true
+            },
+            {
+              "Read": true,
+              "Write": false,
+              "Exec": true
+            }
+          ],
+          "Owner": "kamil",
+          "Group": "users",
+          "Mtime": "2025-09-13T18:34:16.743+02:00"
+        }
+      ],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-13T14:41:54.753+02:00"
+    },
+    {
+      "Name": "tmp",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:27:03.623+02:00"
+    },
+    {
+      "Name": "bin",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:33:02.615+02:00"
+    },
+    {
+      "Name": "var",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:31:55.623+02:00"
+    },
+    {
+      "Name": "sbin",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:28:37.619+02:00"
+    },
+    {
+      "Name": "sys",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:31:13.622+02:00"
+    },
+    {
+      "Name": "lib",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:36:02.616+02:00"
+    },
+    {
+      "Name": "opt",
+      "Type": 16384,
+      "ReadOnly": false,
+      "Interactible": false,
+      "Func": null,
+      "Children": [],
+      "Content": null,
+      "Link": null,
+      "Permission": [
+        {
+          "Read": true,
+          "Write": true,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        },
+        {
+          "Read": true,
+          "Write": false,
+          "Exec": true
+        }
+      ],
+      "Owner": "kamil",
+      "Group": "users",
+      "Mtime": "2025-09-12T16:35:09.617+02:00"
+    }
+  ],
+  "Content": null,
+  "Link": null,
+  "Permission": [
+    {
+      "Read": true,
+      "Write": true,
+      "Exec": true
+    },
+    {
+      "Read": true,
+      "Write": false,
+      "Exec": true
+    },
+    {
+      "Read": true,
+      "Write": false,
+      "Exec": true
+    }
+  ],
+  "Owner": "kamil",
+  "Group": "users",
+  "Mtime": "2025-09-12T16:33:41.623+02:00"
+}
