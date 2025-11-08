@@ -1,0 +1,26 @@
+@theme {
+	--animate-loading: loading 1s ease-in-out infinite;
+	--animate-cursor-blink: blink 1s step-end infinite;
+
+	@keyframes blink {
+		0% {
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes loading {
+		0% {
+			transform: scaleY(1);
+		}
+		30% {
+			transform: scaleY(0.35);
+			background-color: var(--color-loader-primary-hl);
+		}
+		60% {
+			transform: scaleY(1);
+		}
+	}
+}

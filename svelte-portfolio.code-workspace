@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Server/www/dev.chaosmaker"
+		},
+		{
+			"path": "../svelte-website"
+		}
+	],
+	"settings": {}
+}

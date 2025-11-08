@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import 'tailwindcss';
+@import './animations.css';
+@custom-variant light (&:where(.light, .light *));
+
+* {
+	transition: all 0.2s ease-in allow-discrete;
+}
+
+@utility scroll-hidden {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@theme {
+	/* Shadow variables (unchanged) */
+	--shadow-terminal:
+		rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+		rgba(0, 0, 02, 0.5) 0px -4px 0px inset;
+
+	--shadow-button:
+		rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+		rgba(0, 0, 02, 0.4) 0px -3px 0px inset;
+
+	--shadow-bg: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+	--shadow-subtle:
+		rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 3px 4px -3px,
+		rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
+	--background-image-dots-bg: radial-gradient(
+		circle at center,
+		var(--dots-bg-2) 1px,
+		var(--dots-bg-1) 1px
+	);
+
+	/* Background colors */
+	--color-bg-dark-dark: oklch(0.1 0.01 292);
+	--color-bg-dark: oklch(0.15 0.03 292);
+	--color-bg-mid-dark: oklch(0.175 0.03 292);
+	--color-bg-light-dark: oklch(0.2 0.035 292);
+	--color-bg-lighter-dark: oklch(0.25 0.04 292);
+	--color-bg-dark-light: oklch(0.8 0.15 280);
+	--color-bg-light: oklch(0.85 0.2 280);
+	--color-bg-light-light: oklch(0.9 0.3 280);
+	--color-bg-lighter-light: oklch(1 0.3 280);
+
+	/* Text colors */
+	--color-text-dark: oklch(0.96 0.01 292);
+	--color-text-muted-dark: oklch(0.76 0.01 292);
+	--color-text-light: oklch(0.15 0.02 292);
+	--color-text-muted-light: oklch(0.4 0.02 292);
+
+	/* Highlight and border colors */
+	--color-highlight-dark: oklch(0.6 0.02 292);
+	--color-border-dark: oklch(0.3 0.02 292);
+	--color-border-muted-dark: oklch(0.2 0.02 292);
+	--color-highlight-light: oklch(1 0.02 280);
+	--color-border-light: oklch(0.6 0.02 280);
+	--color-border-muted-light: oklch(0.7 0.02 280);
+
+	/* Primary and secondary colors */
+	--color-primary-dark: oklch(0.55 0.15 292);
+	--color-primary-hover-dark: oklch(0.65 0.18 292);
+	--color-secondary-dark: oklch(0.7 0.12 120);
+	--color-primary-light: oklch(0.6 0.1 292);
+	--color-primary-hover-light: oklch(0.65 0.1 292);
+	--color-secondary-light: oklch(0.4 0.1 112);
+
+	/* Loader colors (no light equivalent, using dark values) */
+	--color-loader-primary-dark: oklch(0.55 0.15 292);
+	--color-loader-primary-hl-dark: oklch(0.8 0.15 292);
+	--color-loader-primary-light: oklch(0.55 0.15 292);
+	--color-loader-primary-hl-light: oklch(0.8 0.15 292);
+
+	/* Status colors */
+	--color-danger-dark: oklch(0.7 0.05 30);
+	--color-warning-dark: oklch(0.7 0.05 100);
+	--color-success-dark: oklch(0.7 0.05 160);
+	--color-info-dark: oklch(0.7 0.05 260);
+	--color-danger-light: oklch(0.5 0.05 30);
+	--color-warning-light: oklch(0.5 0.05 100);
+	--color-success-light: oklch(0.5 0.05 160);
+	--color-info-light: oklch(0.5 0.05 260);
+
+	/* Font variables (unchanged) */
+	--font-primary: 'Space Mono', monospace;
+	--font-terminal: 'JetBrains Mono', monospace;
+}
+
+:root {
+	transition: all 0.2s ease-in;
+	--dots-bg-1: oklch(0.1 0.01 292);
+	--dots-bg-2: oklch(0.2 0.01 292);
+
+	--border-cart: solid 1px var(--border);
+	--shadow:
+		rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+		rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
+	--gradient-bg-direction: 0deg;
+	--gradient-bg: linear-gradient(var(--gradient-bg-direction), var(--bg-dark) 80%, transparent);
+
+	--gradient: linear-gradient(0deg, var(--bg) 95%, var(--bg-light));
+	--gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+
+	--transition-standard: all 0.2s ease-in;
+	--transition-theme: all 0.2s ease;
+	--lang-html: oklch(0.6 0.08207 195.16);
+	--lang-css: oklch(0.5 0.16037 303.368);
+	--lang-js: oklch(0.8 0.18261 102.094);
+	--lang-php: oklch(0.5923 0.09155 272.038);
+	--lang-cs: oklch(0.55 0.27927 141.446);
+	--lang-cpp: oklch(0.6 0.15576 6.88);
+
+	/* 
+    
+    #underline-bg 
+    
+    /single side/ linear-gradient(90deg, var(--text) 85%, transparent 100%);
+    /both sides/ radial-gradient(circle, var(--text) 85%, transparent 100%); 
+
+    #misc
+
+    background-image: radial-gradient(circle at center, #9f7aea20 1px, transparent 1px); background-size: 20px 20px;
+    (dotted background)
+    
+    */
+
+	main.light {
+		--dots-bg-1: oklch(0.9 0.01 292);
+		--dots-bg-2: oklch(0.8 0.01 292);
+
+		--bg-dark: oklch(0.92 0.2 280);
+		--bg: oklch(0.94 0.3 280);
+		--bg-light: oklch(0.96 0.3 280);
+
+		--text: oklch(0.15 0.02 292);
+		--text-muted: oklch(0.4 0.02 292);
+
+		--highlight: oklch(1 0.02 280);
+		--border: oklch(0.6 0.02 280);
+		--border-muted: oklch(0.7 0.02 280);
+
+		--border-cart: solid 1px var(--bg);
+		--shadow:
+			oklch(0.72 0.01 292 / 0.4) 0px 2px 4px, oklch(0.62 0.01 292 / 0.3) 0px 7px 13px -3px,
+			oklch(0.52 0.01 292 / 0.2) 0px -3px 0px inset;
+
+		--primary: oklch(0.6 0.1 292);
+		--primary-hover: oklch(0.65 0.1 292);
+		--secondary: oklch(0.4 0.1 112);
+
+		--gradient: linear-gradient(0deg, var(--bg), var(--bg-light) 95%);
+		--gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+		--box-shadow-muted:
+			rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+		--danger: oklch(0.5 0.05 30);
+		--warning: oklch(0.5 0.05 100);
+		--success: oklch(0.5 0.05 160);
+		--info: oklch(0.5 0.05 260);
+	}
+}
