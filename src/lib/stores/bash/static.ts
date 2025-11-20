@@ -1,27 +1,43 @@
 import { Bash, ExitCode, type Group, type User } from './bash';
 import { Type, type TreeNode } from './fs';
+import type { Char } from '../char';
+import { ls } from './commands/ls';
 
-export type CommandArg = `-${string}`;
-
-export interface ICommand {
-	method: (this: Bash, ...args: any[]) => ExitCode;
-	args: CommandArg[] | string[] | null;
+export type ICommand = {
+	method: (this: Bash, args: CommandArgs) => Result;
+	flags: string[];
 	help: string;
 	root: boolean;
-}
+};
+
+export type CommandArgs = {
+	flags: string[];
+	args: string[];
+};
+
+export type resultData = {
+	cmd: string; //the string that contains the shorthand for the command that was executed - used in a switch statement in parseResult
+	data: any; //the data that the commmand may have returned like TreeNodes[] from ls
+	args?: CommandArgs;
+};
+
+export type Result = {
+	exitCode: ExitCode;
+	data?: resultData;
+};
 
 export const GROUP: Group[] = [
 	{
 		groupname: 'sudo',
 		gid: 69,
-		members: ['root', 'admin']
+		members: [0, 1001]
 	},
 	{
 		groupname: 'users',
 		gid: 1000,
-		members: ['admin', 'user']
+		members: [1001, 1002]
 	}
-];
+] as const;
 
 export const PASSWD: User[] = [
 	{
@@ -50,30 +66,32 @@ export const PASSWD: User[] = [
 	}
 ];
 
-export const HELP_ARGS: CommandArg[] = ['-h', '--help'];
-
-export const cmd_return = function (this: Bash, ...args: string[]): ExitCode {
-	return 0;
+export const cmd_return = function (this: Bash, args: CommandArgs): Result {
+	let result: Result = { exitCode: ExitCode.ERROR };
+	return result;
 };
 
-export const cmd_cd = function (this: Bash, ...args: string[]): ExitCode {
-	const path = args[0];
-	let targetNode: TreeNode;
+export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
+	let result: Result = { exitCode: ExitCode.ERROR };
+	const path = args.args[0];
+	let targetNode: TreeNode | null;
 
-	if (args.length > 1) return ExitCode.ERROR; // Too many args
+	if (args.args.length > 1) return result; // Too many args
 
 	// if no args cd into home dir
 
-	if (args.length === 0) {
+	if (args.args.length === 0) {
 		this.getFs().cwd = this.getFs().home;
-		return ExitCode.SUCCESS;
+		result.exitCode = ExitCode.SUCCESS;
+		return result;
 	}
 
 	// if the arg is - cd make your current dir the prev dir and vice versa
 
-	if (args[0] === '-') {
+	if (args.args[0] === '-') {
 		[this.getFs().cwd, this.getFs().pwd] = [this.getFs().pwd, this.getFs().cwd];
-		return ExitCode.SUCCESS;
+		result.exitCode = ExitCode.SUCCESS;
+		return result;
 	}
 
 	// Change the input STRING path from relative to absolute by replacing ~ with the home directory path
@@ -87,28 +105,42 @@ export const cmd_cd = function (this: Bash, ...args: string[]): ExitCode {
 	this.getFs().pwd = this.getFs().cwd;
 	targetNode = this.getFs()._getNodeByPathArray(this.getFs().resolvePath(resolvedPath)); // Conversion from STRING path to ARRAY
 
-	if (!targetNode) return ExitCode.ERROR;
-	if (targetNode.type !== Type.Directory) return ExitCode.ERROR;
+	if (targetNode === null) return result;
+	if (targetNode.type !== Type.Directory) return result;
 	//if () return ExitCode.ERROR; // Check for read permissions on node and user
 
 	this.getFs().cwd = this.getFs().resolvePath(resolvedPath); // CD was successfull, change current dir to the verified target dir
-	return ExitCode.SUCCESS;
+	result.exitCode = ExitCode.SUCCESS;
+	return result;
 };
+
+/* const compareArrays = (A: string[], B: string[]): { value: string; isInB: boolean }[] => {
+	const result = A.map((item) => ({ value: item, isInB: B.includes(item) }));
+
+	// Validate all B items are in A
+	const invalidItems = B.filter((item) => !A.includes(item));
+	if (invalidItems.length > 0) {
+		throw new Error(`Items '${invalidItems.join("', '")}' from B not found in A`);
+	}
+
+	return result;
+}; */
 
 export const COMMANDS = {
 	return: {
 		method: cmd_return,
-		args: [] as CommandArg[],
+		flags: [] as string[],
 		help: 'PATH TO HELP.MD',
 		root: false
 	},
 	cd: {
 		method: cmd_cd,
-		args: [] as string[],
+		flags: [] as string[],
 		help: 'PATH TO HELP.MD',
 		root: false
-	}
-} satisfies Record<string, ICommand>;
+	},
+	ls
+} as const satisfies Record<string, ICommand>;
 
 /* //export const commands {
     return: {

@@ -1,28 +1,28 @@
-import { FileOutput } from '@lucide/svelte';
-import Cursor from '../../modules/terminal/Cursor.svelte';
-import { Bash, ExitCode, type BashInitArgs, type User } from './bash/bash';
-import { Stack } from './stack';
-import type { VirtualFS } from './bash/fs';
+import { Bash, ExitCode, type BashInitArgs, type User } from '../bash/bash';
+import type { VirtualFS } from '../bash/fs';
+import type { CommandArgs } from '../bash/static';
+import { Char } from '../char';
 
-export interface TerminalMode {}
+export type TerminalMode = {};
 
-export interface TermInitArgs {
+export type TermInitArgs = {
 	bash: BashInitArgs;
-}
+};
 
-export interface ParsedInput {
+export type ParsedInput = {
 	command: string;
-	args: string[];
-}
+	args: CommandArgs;
+};
 
-export interface PrintData {
+export type PrintData = {
 	path: string;
 	output: any; // TODO: Make this be any predefined format of outputs like ls, ls w/ flags and so on;
-}
+	cmd: string;
+};
 
-export interface PageCallbacks {
+export type PageCallbacks = {
 	print: (data: PrintData) => void;
-}
+};
 
 export class Terminal {
 	private bash: Bash;
@@ -34,41 +34,59 @@ export class Terminal {
 	}
 
 	private _parseInput(input: string): ParsedInput {
-		const result: ParsedInput = { command: '', args: [] };
+		let args: string[] = [];
+		const result: ParsedInput = { command: '', args: { flags: [], args: [] } };
 		let current: string = '';
 		let inQuotes: boolean = false;
-		let quoteChar: Stack<string> = new Stack<string>();
+		let quoteChar: string = '';
 
 		for (let i = 0; i < input.length; i++) {
 			const char = input[i];
 
 			if ((char === '"' || char === "'") && !inQuotes) {
 				inQuotes = true;
-				quoteChar.push(char);
+				quoteChar = char;
 				continue;
-			} else if (char === quoteChar.peek() && inQuotes) {
+			} else if (char === quoteChar && inQuotes) {
 				inQuotes = false;
-				quoteChar.pop();
 				continue;
 			}
 
 			if (char === ' ' && !inQuotes) {
-				if (current !== '') {
-					result.command = current;
-					current = '';
-				}
+				if (current === '') continue;
+
+				result.command === '' ? (result.command = current) : args.push(current);
+				current = '';
 			} else {
 				current += char;
 			}
 		}
-		if (current !== '') result.args.push(current);
+
+		if (current !== '') result.command === '' ? (result.command = current) : args.push(current);
+
+		for (let i = 0; i < args.length; i++) {
+			let curr = args[i];
+
+			if (!curr.startsWith('-')) result.args.args.push(curr);
+			else {
+				curr = curr.replaceAll('-', '');
+
+				if (curr.length > 0) {
+					for (let n = 0; n < curr.length; n++) {
+						result.args.flags.push(curr[n]);
+					}
+				}
+			}
+		}
+
 		return result;
 	}
 
 	executeCommand(input: string): void {
 		this.bash.updateHistory(input);
 		const parsed: ParsedInput = this._parseInput(input);
-		this.bash.executeCommand(parsed.command, ...parsed.args);
+		console.log(parsed);
+		this.bash.executeCommand(parsed.command, parsed.args);
 	}
 
 	registerCallbacks(callbacks: PageCallbacks): void {

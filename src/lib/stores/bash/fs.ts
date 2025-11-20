@@ -1,3 +1,4 @@
+import type { readonly } from 'svelte/store';
 import type { Permission, User } from './bash';
 
 export enum Type {
@@ -5,18 +6,18 @@ export enum Type {
 	File = 32768
 }
 
-type NodePerms = {
+export type NodePerms = {
 	user: Permission;
 	group: Permission;
 	other: Permission;
 };
 
-export interface FsInitArgs {
+export type FsInitArgs = {
 	fs: any;
 	user: User;
-}
+};
 
-export interface TreeNode {
+export type TreeNode = {
 	name: string;
 	type: Type;
 	readonly: boolean;
@@ -29,7 +30,8 @@ export interface TreeNode {
 	owner: string;
 	group: string;
 	modtime: Date;
-}
+	parent?: TreeNode;
+};
 
 export class VirtualFS {
 	private root: TreeNode; // TODO make this the correct type
@@ -73,7 +75,6 @@ export class VirtualFS {
 	}
 
 	formatPath(path: string): string {
-		console.log('FORMAT PATH ', path);
 		const prefix = this.pathArrayToString(this.home);
 		if (path.startsWith(prefix)) {
 			return path.replace(prefix, '~');
@@ -91,9 +92,7 @@ export class VirtualFS {
 		}
 
 		const start = this._isAbsolutePath(path) ? [] : this.cwd.slice();
-		console.log('START', start);
 		const parts = this._splitPathString(path);
-		console.log('PARTS', parts);
 
 		for (let i = 0; i < parts.length; i++) {
 			const seg = parts[i];
@@ -111,7 +110,7 @@ export class VirtualFS {
 		return start;
 	}
 
-	_getNodeByPathArray(path: string[]): TreeNode {
+	_getNodeByPathArray(path: string[]): TreeNode | null {
 		if (path.length === 1 && path[0] === '/') return this.root;
 
 		let node: TreeNode = this.root;
@@ -122,9 +121,24 @@ export class VirtualFS {
 
 			if (node.type === Type.File) return node;
 			const newNode = node.children.find((child) => child.name === seg);
+			console.log(newNode);
 			if (newNode !== undefined) node = newNode;
+			else return null;
 		}
 
 		return node;
+	}
+
+	_getPathToNode(node: TreeNode): string[] {
+		const path: string[] = [];
+		let current = node;
+		path.push(node.name);
+
+		while (current.parent) {
+			current = current.parent;
+			path.unshift(current.name);
+		}
+
+		return path;
 	}
 }

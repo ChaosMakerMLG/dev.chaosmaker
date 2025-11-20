@@ -1,44 +1,43 @@
-import { command } from '$app/server';
-import { COMMANDS, GROUP, HELP_ARGS, PASSWD, type CommandArg, type ICommand } from './static';
+import { COMMANDS, GROUP, PASSWD, type CommandArgs, type ICommand, type Result } from './static';
 import { VirtualFS } from './fs';
-import { Terminal, type PrintData } from '../terminal';
+import { Terminal, type PrintData } from '../terminal/terminal';
 import { Stack } from '../stack';
-import path from 'path';
 
-export interface Permission {
+export type Permission = {
 	r: boolean;
 	w: boolean;
 	x: boolean;
-}
+};
 
-export interface BashInitArgs {
+export type BashInitArgs = {
 	stdio?: Terminal;
 	user: User;
 	fs: any;
-}
+};
 
 // TODO: Finish this
+// TODO: Change into a type instead of an enum for performance (low priority)
 export enum ExitCode {
 	SUCCESS = 0,
 	ERROR = 1
 }
 
-export interface User {
+export type User = {
 	username: string;
-	passwd: string; //HASHED PASSWORD
-	uid: number; // Normal user 1000+ System user 1-999 root - 0
-	gid: number; // Primary group | 'Users' 1000 - Others - 1000+ root - 0
-	home: string;
+	passwd: string; //HASHED PASSWORD //TODO: Make a formated type
+	readonly uid: number; // Normal user 1000+ System user 1-999 root - 0 //TODO: Make a formated type
+	readonly gid: number; // Primary group | 'Users' 1000 - Others - 1000+ root - 0 //TODO: Make a formated type
+	home: string; //TODO: Make a formated type
 	history: string[];
-	cwd?: string[];
-	pwd?: string[];
-}
+	cwd?: string[]; //TODO: Make a formated type
+	pwd?: string[]; //TODO: Make a formated type
+};
 
-export interface Group {
+export type Group = {
 	groupname: string;
 	gid: number; // Primary group 'Users' 1000 - Others - 1000+ root - 0
-	members: string[];
-}
+	members: number[]; //TODO: Make a formated type UID
+};
 
 export class Bash {
 	private vfs: VirtualFS;
@@ -47,12 +46,10 @@ export class Bash {
 	private _group: Group[];
 	private _terminal!: Terminal;
 	private user: User;
-	private _helpArgs: CommandArg[];
-	private _commands: Record<string, ICommand>;
+	private readonly _commands: Record<string, ICommand>;
 
 	constructor(args: BashInitArgs) {
 		this.user = args.user;
-		this._helpArgs = HELP_ARGS;
 		this._commands = COMMANDS;
 		this._passwd = PASSWD;
 		this._group = GROUP;
@@ -60,8 +57,6 @@ export class Bash {
 		this._instances = new Stack<User>();
 
 		this.vfs = new VirtualFS({ fs: args.fs, user: args.user });
-
-		console.log(this._commands);
 	}
 
 	updateHistory(input: string): void {
@@ -90,6 +85,10 @@ export class Bash {
 		return this.vfs;
 	}
 
+	hasSudoPerms(uid: number): boolean {
+		return this._group[1].members.includes(uid);
+	}
+
 	changeUser(user: User) {
 		this.user = user;
 		this.vfs.home = this.vfs._splitPathString(user.home);
@@ -97,27 +96,28 @@ export class Bash {
 		this.vfs.pwd = user.pwd ? user.pwd : this.vfs._splitPathString(user.home);
 	}
 
-	executeCommand(commandName: string, ...args: string[]): void {
+	executeCommand(commandName: string, args: CommandArgs): void {
+		let result: Result = { exitCode: ExitCode.ERROR };
 		const command = this._commands[commandName];
-		if (!command) this.throwError(ExitCode.ERROR);
+		if (!command) this.throwError(result);
+
 		if (command.root) {
-			if (this._group[1].members.includes(this.user.username)) {
-				let out: ExitCode = command.method.call(this, ...args);
-				this.throwError(out);
+			if (this.hasSudoPerms(this.user.uid)) {
+				let out: Result = command.method.call(this, args);
+				this.appendNewResult(this.getPwd(), out, this.user.history[0]);
 			}
-			this.throwError(ExitCode.ERROR);
+			this.throwError(result);
 		}
 
-		let out: ExitCode = command.method.call(this, ...args);
-		this.throwError(out);
+		let out: Result = command.method.call(this, args);
+		this.appendNewResult(this.getPwd(), out.data?.data, this.user.history[0]);
 	}
 
-	throwError(code: ExitCode, data?: any): void {
-		//TODO: Make data some interface format or smh.
-		switch (code) {
-			default:
-				this.appendNewResult(this.vfs.pwd, 'Success!');
-				break;
+	throwError(result: Result): void {
+		switch (result.exitCode) {
+			default: {
+				throw new Error(`Error, dont know where, just look for it;`);
+			}
 		}
 	}
 
@@ -141,12 +141,24 @@ export class Bash {
 		}
 	}
 
-	appendNewResult(path: string[], output: any) {
+	private appendNewResult(path: string[], output: any, cmd: string) {
 		const data: PrintData = {
 			path: this.vfs.formatPath(this.vfs.pathArrayToString(path)),
-			output: output
+			output: output,
+			cmd: cmd
 		};
-		console.log('NEW RESULT - ', data);
 		this._terminal.PrintOutput(data);
+	}
+
+	formatBytes(bytes: number, dPoint?: number): string {
+		if (!+bytes) return '0';
+
+		const k: number = 1024;
+		const dp: number = dPoint ? (dPoint < 0 ? 0 : dPoint) : 1;
+		const units: string[] = ['', 'K', 'M', 'G', 'T', 'P'];
+
+		const i: number = Math.floor(Math.log(bytes) / Math.log(k));
+
+		return `${(bytes / Math.pow(k, i)).toFixed(dp)}${units[i]}`;
 	}
 }
