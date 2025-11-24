@@ -620,7 +620,7 @@
 							"Mtime": "2025-09-13T18:32:08.743+02:00"
 						},
 						{
-							"Name": "Desktop",
+							"Name": "Desktop Test",
 							"Type": 16384,
 							"ReadOnly": false,
 							"Interactible": false,

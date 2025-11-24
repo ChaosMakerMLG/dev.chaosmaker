@@ -161,4 +161,36 @@ export class Bash {
 
 		return `${(bytes / Math.pow(k, i)).toFixed(dp)}${units[i]}`;
 	}
+
+	getGroupByName(name: string): Group {
+		const out: Group | undefined = this._group.find((group) => group.groupname === name);
+		console.log(out);
+
+		if (out) return out;
+		else throw new Error(`Cannot find a user group named ${name}`);
+	}
+
+	getUserByName(name: string): User {
+		const out: User | undefined = this._passwd.find((user) => user.username === name);
+		console.log(out);
+
+		if (out) return out;
+		else throw new Error(`Cannot find a user named ${name}`);
+	}
+
+	getGroupByGid(gid: number): Group {
+		const out: Group | undefined = this._group.find((group) => group.gid === gid);
+		console.log(out);
+
+		if (out) return out;
+		else throw new Error(`Cannot find a user group named ${name}`);
+	}
+
+	getUserByUid(uid: number): User {
+		const out: User | undefined = this._passwd.find((user) => user.uid === uid);
+		console.log(out);
+
+		if (out) return out;
+		else throw new Error(`Cannot find a user group named ${name}`);
+	}
 }

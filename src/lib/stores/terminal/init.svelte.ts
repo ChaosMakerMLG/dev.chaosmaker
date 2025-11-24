@@ -48,28 +48,63 @@ function jsonToTreeNode(data: any, parent?: TreeNode): TreeNode {
 	return node;
 }
 
+async function fetchFsJson(sig: string): Promise<any> {
+	const signature: string | null = localStorage.getItem('signature');
+
+	if (signature !== sig || signature === null || localStorage.getItem('fs') === null) {
+		const fs: JSON = await fetchFileSystem('/src/lib/assets/fs/fs.json');
+		localStorage.setItem('signature', sig);
+		localStorage.setItem('fs', JSON.stringify(fs));
+
+		console.info('FS fetched from file, new sinature:', sig);
+
+		return fs;
+	} else {
+		const fs: string | null = localStorage.getItem('fs');
+		if (fs === null) throw new Error('FS in LocalStorage is null!');
+
+		console.info('FS fetched from localStorage with signature:', sig);
+
+		return JSON.parse(fs);
+	}
+}
+
+async function fetchFsSignature(path: string): Promise<any> {
+	try {
+		const response = await fetch(path);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const data = await response.text();
+		return data.slice(0, 36); //32 characters of uuid + 4 dashes
+	} catch (error) {
+		console.error('Failed to fetch the file system signature', error);
+	}
+}
+
 async function fetchFileSystem(path: string): Promise<any> {
 	const response = await fetch(path);
 	if (!response.ok) throw new Error('Failed to fetch the file system json');
 
 	const data = await response.json();
-
-	const node: TreeNode = jsonToTreeNode(data);
-	return node;
+	return data;
 }
 
 export async function initTerminal(user: User, callbackInit: any): Promise<Terminal> {
 	try {
-		let fsJson = await fetchFileSystem('/src/lib/assets/fs/fs.json');
+		const sig = await fetchFsSignature('/src/lib/assets/fs/signature');
+		const fsJson = await fetchFsJson(sig);
+		const fs: TreeNode = jsonToTreeNode(fsJson);
 
-		let args: TermInitArgs = {
+		const args: TermInitArgs = {
 			bash: {
-				user: user,
-				fs: fsJson
+				user,
+				fs
 			}
 		};
 
-		let terminal = new Terminal(args);
+		const terminal = new Terminal(args);
 		terminal.registerCallbacks(callbackInit);
 
 		return terminal;

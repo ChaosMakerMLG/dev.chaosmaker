@@ -79,11 +79,12 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 	const f_a: boolean = flagInfo.has('a') || flagInfo.has('f');
 	const f_h: boolean = flagInfo.has('h');
 
-	if (flagInfo.has('l')) {
+	if (flagInfo.has('l') || flagInfo.has('g') || flagInfo.has('o')) {
 		const w: HTMLElement = document.createElement('div');
 
 		for (const node of nodes) {
-			if (!flagInfo.has('U') && !flagInfo.has('f')) asciiByteQSort(node.children);
+			if (!flagInfo.has('U') && !flagInfo.has('f'))
+				asciiByteQSort(node.children, flagInfo.has('r'));
 
 			const elem: HTMLElement = document.createElement('div');
 			const rows: string[] = [];
@@ -92,11 +93,26 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 			const sizes = node.children.map((child) => (child.type === Type.Directory ? '4096' : '1'));
 			const maxSizeWidth = Math.max(...sizes.map((size) => size.length));
 
+			for (const child of node.children) {
+				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
+
+				const cols: LsEntry = {
+					perms: formatPermission(child),
+					children: formatChildren(child),
+					owners: formatOwners.call(this, child, flagInfo),
+					size: formatSize.call(this, f_h, child, maxSizeWidth),
+					modt: formatModtime(child),
+					name: formatName(child, flagInfo)
+				};
+
+				rows.push(LsEntryUtils.toString(cols));
+			}
+
 			if (f_a && !flagInfo.has('A')) {
 				const current: LsEntry = {
 					perms: formatPermission(node),
 					children: formatChildren(node),
-					owners: formatOwners(node, flagInfo),
+					owners: formatOwners.call(this, node, flagInfo),
 					size: formatSize.call(this, f_h, node, maxSizeWidth),
 					modt: formatModtime(node),
 					name: '.'
@@ -105,7 +121,7 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 					? {
 							perms: formatPermission(node.parent),
 							children: formatChildren(node.parent),
-							owners: formatOwners(node.parent, flagInfo),
+							owners: formatOwners.call(this, node.parent, flagInfo),
 							size: formatSize.call(this, f_h, node.parent, maxSizeWidth),
 							modt: formatModtime(node.parent),
 							name: '..'
@@ -115,24 +131,11 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 							name: '..'
 						};
 
-				rows.push(LsEntryUtils.toString(current), LsEntryUtils.toString(parent));
-			}
-
-			for (const child of node.children) {
-				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
-
-				const cols: LsEntry = {
-					perms: formatPermission(child),
-					children: formatChildren(child),
-					owners: formatOwners(child, flagInfo),
-					size: formatSize.call(this, f_h, child, maxSizeWidth),
-					modt: formatModtime(child),
-					name: /\s/.test(child.name) ? `'${child.name}'` : `${child.name}`
-				};
-
-				if (flagInfo.has('g')) cols.owners = '';
-
-				rows.push(LsEntryUtils.toString(cols));
+				if (flagInfo.has('r')) {
+					rows.push(LsEntryUtils.toString(parent), LsEntryUtils.toString(current));
+				} else {
+					rows.unshift(LsEntryUtils.toString(current), LsEntryUtils.toString(parent));
+				}
 			}
 
 			//TODO: Calculate the total size of contents in the node
@@ -170,12 +173,31 @@ function parsePerms(perms: NodePerms): string {
 	return parts.join('');
 }
 
-function formatOwners(node: TreeNode, flag: any): string {
+function formatOwners(this: Bash, node: TreeNode, flag: any): string {
 	const owner: string = node.owner;
 	const group: string = node.group;
 
+	if (flag.has('G') || flag.has('o')) {
+		if (flag.has('n')) {
+			const uid: number = this.getUserByName(owner).uid;
+			return `${uid}`;
+		}
+		return `${owner}`;
+	}
+
 	if (flag.has('g')) {
-		return '';
+		if (flag.has('n')) {
+			const gid: number = this.getGroupByName(group).gid;
+			return `${gid}`;
+		}
+		return `${group}`;
+	}
+
+	if (flag.has('n')) {
+		const uid: number = this.getUserByName(owner).uid;
+		const gid: number = this.getGroupByName(group).gid;
+
+		return `${uid} ${gid}`;
 	}
 
 	return `${owner} ${group}`;
@@ -216,6 +238,19 @@ function formatModtime(node: TreeNode): string {
 	].join(' ');
 }
 
+function formatName(node: TreeNode, flag: any) {
+	let name: string;
+	const char: string = flag.has('Q') ? '"' : "'";
+
+	if (flag.has('N')) {
+		name = node.name;
+	} else {
+		name = /\s/.test(node.name) ? `${char}${node.name}${char}` : `${node.name}`; //test if any spaces specifically '\s' (escape and 's' for space)
+	}
+
+	return flag.has('p') && node.type === Type.Directory ? `${name}/` : name;
+}
+
 const checkFlags = (pFlags: string[], dFlags: string[]) => {
 	const flagSet = new Set(pFlags);
 
@@ -245,7 +280,8 @@ export const ls: ICommand = {
 		'o',
 		'n',
 		'N',
-		'L'
+		'L',
+		'm'
 	] as string[],
 	help: 'PATH TO HELP.MD',
 	root: false

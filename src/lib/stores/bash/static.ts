@@ -1,7 +1,6 @@
 import { Bash, ExitCode, type Group, type User } from './bash';
-import { Type, type TreeNode } from './fs';
-import type { Char } from '../char';
 import { ls } from './commands/ls';
+import { cd } from './commands/cd';
 
 export type ICommand = {
 	method: (this: Bash, args: CommandArgs) => Result;
@@ -63,6 +62,14 @@ export const PASSWD: User[] = [
 		gid: 1000,
 		home: '/home/user',
 		history: [] //TODO: Delete this and declare a new history array when logging the user in.
+	},
+	{
+		username: 'kamil',
+		passwd: '000',
+		uid: 1003,
+		gid: 1000,
+		home: '/home/kamil',
+		history: [] //TODO: Delete this and declare a new history array when logging the user in.
 	}
 ];
 
@@ -71,61 +78,6 @@ export const cmd_return = function (this: Bash, args: CommandArgs): Result {
 	return result;
 };
 
-export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
-	let result: Result = { exitCode: ExitCode.ERROR };
-	const path = args.args[0];
-	let targetNode: TreeNode | null;
-
-	if (args.args.length > 1) return result; // Too many args
-
-	// if no args cd into home dir
-
-	if (args.args.length === 0) {
-		this.getFs().cwd = this.getFs().home;
-		result.exitCode = ExitCode.SUCCESS;
-		return result;
-	}
-
-	// if the arg is - cd make your current dir the prev dir and vice versa
-
-	if (args.args[0] === '-') {
-		[this.getFs().cwd, this.getFs().pwd] = [this.getFs().pwd, this.getFs().cwd];
-		result.exitCode = ExitCode.SUCCESS;
-		return result;
-	}
-
-	// Change the input STRING path from relative to absolute by replacing ~ with the home directory path
-
-	//TODO: Change that to a global function inside fs class to parse all possible path formats????? already exists, need to verify
-
-	let resolvedPath = path.startsWith('~')
-		? path.replace('~', this.getFs().pathArrayToString(this.getFs().home))
-		: path;
-
-	this.getFs().pwd = this.getFs().cwd;
-	targetNode = this.getFs()._getNodeByPathArray(this.getFs().resolvePath(resolvedPath)); // Conversion from STRING path to ARRAY
-
-	if (targetNode === null) return result;
-	if (targetNode.type !== Type.Directory) return result;
-	//if () return ExitCode.ERROR; // Check for read permissions on node and user
-
-	this.getFs().cwd = this.getFs().resolvePath(resolvedPath); // CD was successfull, change current dir to the verified target dir
-	result.exitCode = ExitCode.SUCCESS;
-	return result;
-};
-
-/* const compareArrays = (A: string[], B: string[]): { value: string; isInB: boolean }[] => {
-	const result = A.map((item) => ({ value: item, isInB: B.includes(item) }));
-
-	// Validate all B items are in A
-	const invalidItems = B.filter((item) => !A.includes(item));
-	if (invalidItems.length > 0) {
-		throw new Error(`Items '${invalidItems.join("', '")}' from B not found in A`);
-	}
-
-	return result;
-}; */
-
 export const COMMANDS = {
 	return: {
 		method: cmd_return,
@@ -133,12 +85,7 @@ export const COMMANDS = {
 		help: 'PATH TO HELP.MD',
 		root: false
 	},
-	cd: {
-		method: cmd_cd,
-		flags: [] as string[],
-		help: 'PATH TO HELP.MD',
-		root: false
-	},
+	cd,
 	ls
 } as const satisfies Record<string, ICommand>;
 

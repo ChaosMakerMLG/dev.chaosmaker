@@ -99,8 +99,7 @@ export class Terminal {
 
 	getCwd(): string {
 		const fs: VirtualFS = this.bash.getFs();
-		let temp: string = fs.formatPath(fs.pathArrayToString(this.bash.getCwd()));
-		return temp;
+		return fs.formatPath(fs.pathArrayToString(this.bash.getCwd()));
 	}
 
 	userLogin(username: string, passwd: string): ExitCode {

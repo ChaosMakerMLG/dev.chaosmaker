@@ -10,12 +10,10 @@ export class Char {
 		this.value = char as BrandedChar;
 	}
 
-	// Public factory method
 	static from(char: string): Char {
 		return new Char(char);
 	}
 
-	// Get the primitive value
 	valueOf(): string {
 		return this.value;
 	}
@@ -24,7 +22,6 @@ export class Char {
 		return this.value;
 	}
 
-	// Character operations
 	charCode(): number {
 		return this.value.charCodeAt(0);
 	}
@@ -69,7 +66,6 @@ export class Char {
 		return this.value.toLowerCase() === other.value.toLowerCase();
 	}
 
-	// Static constructors
 	static fromCharCode(charCode: number): Char {
 		return Char.from(String.fromCharCode(charCode));
 	}
