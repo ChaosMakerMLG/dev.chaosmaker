@@ -8,44 +8,52 @@ export function isInitializing(): boolean {
 	return initializing;
 }
 
-function jsonToTreeNode(data: any, parent?: TreeNode): TreeNode {
-	const node: TreeNode = {
-		name: data.Name,
-		type: data.Type,
-		readonly: data.ReadOnly,
-		interactible: data.Interactible,
-		func: data.Func,
-		children: [],
-		content: data.Content,
-		link: data.Link || [],
-		permission: {
-			user: {
-				r: data.Permission[0]?.Read,
-				w: data.Permission[0]?.Write,
-				x: data.Permission[0]?.Exec
-			},
-			group: {
-				r: data.Permission[1]?.Read,
-				w: data.Permission[1]?.Write,
-				x: data.Permission[1]?.Exec
-			},
-			other: {
-				r: data.Permission[2]?.Read,
-				w: data.Permission[2]?.Write,
-				x: data.Permission[2]?.Exec
-			}
-		},
-		owner: data.Owner,
-		group: data.Group,
-		modtime: new Date(data.Mtime),
-		parent: parent
-	};
+function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
+	const FsTable: Map<number, TreeNode> = new Map<number, TreeNode>;
+	const keyList = Object.keys(data);
 
-	node.children = data.Children
-		? data.Children.map((child: any) => jsonToTreeNode(child, node))
-		: [];
+	for(const key in keyList) {
+		const object = data[key];
+		const node: TreeNode = {
+			inode: object.Inode,
+			name: object.Name,
+			type: object.Type,
+			interactible: object.Interactible,
+			func: object.Func,
+			children: [],
+			content: object.Content,
+			link: object.Link || [],
+			permission: {
+				user: {
+					r: object.Permission[0]?.Read,
+					w: object.Permission[0]?.Write,
+					x: object.Permission[0]?.Exec
+				},
+				group: {
+					r: object.Permission[1]?.Read,
+					w: object.Permission[1]?.Write,
+					x: object.Permission[1]?.Exec
+				},
+				other: {
+					r: object.Permission[2]?.Read,
+					w: object.Permission[2]?.Write,
+					x: object.Permission[2]?.Exec
+				}
+			},
+			owner: object.Owner,
+			group: object.Group,
+			timestamps: {
+				mTime: new Date(object.TimeStamps.MTime),
+				cTime: new Date(object.TimeStamps.CTime),
+				aTime: new Date(object.TimeStamps.ATime)
+			},
+			parent: object.parent
+		};
 
-	return node;
+		FsTable.set(object.Inode, node);
+	}
+	console.log(FsTable);
+	return FsTable;
 }
 
 async function fetchFsJson(sig: string): Promise<any> {
@@ -95,7 +103,7 @@ export async function initTerminal(user: User, callbackInit: any): Promise<Termi
 	try {
 		const sig = await fetchFsSignature('/src/lib/assets/fs/signature');
 		const fsJson = await fetchFsJson(sig);
-		const fs: TreeNode = jsonToTreeNode(fsJson);
+		const fs: Map<number, TreeNode> = jsonToNodeTable(fsJson);
 
 		const args: TermInitArgs = {
 			bash: {

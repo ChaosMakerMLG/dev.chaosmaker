@@ -1,9 +1,12 @@
 import type { readonly } from 'svelte/store';
-import type { Permission, User } from './bash';
+import type { Permission, TimeStamps, User } from './bash';
+import { Stack } from '../stack';
+import { Pause } from '@lucide/svelte';
 
 export enum Type {
 	Directory = 16384,
-	File = 32768
+	File = 32768,
+	SymblicLink = 40960
 }
 
 export type NodePerms = {
@@ -18,118 +21,132 @@ export type FsInitArgs = {
 };
 
 export type TreeNode = {
+	inode: number;
+	parent?: number;
 	name: string;
 	type: Type;
-	readonly: boolean;
+	children: number[];
+	content: string; // GUID of the cache file that contains the file contents.
+	link: number; // Links
+	permission: NodePerms;
+	owner: number;
+	group: number;
+	timestamps: TimeStamps;
 	interactible: boolean;
 	func: any;
-	children: TreeNode[];
-	content: string; // Path to the content of the file
-	link: string[]; // Symlink
-	permission: NodePerms;
-	owner: string;
-	group: string;
-	modtime: Date;
-	parent?: TreeNode;
 };
 
 export class VirtualFS {
-	private root: TreeNode; // TODO make this the correct type
+	private FsTable: Map<number, TreeNode>;
+	private rootINode: number;
 
-	home: string[];
-	cwd: string[];
-	pwd: string[];
+	home: number;
+	cwd: number;
+	pwd: number;
 
 	constructor(args: FsInitArgs) {
-		this.root = args.fs;
-		this.home = this._splitPathString(args.user.home);
+		this.FsTable = args.fs;
+		this.rootINode = 1;
+		this.home = this._pathStringToINode(args.user.home);
 		this.cwd = args.user.cwd ? args.user.cwd : this.home;
 		this.pwd = args.user.pwd ? args.user.pwd : this.cwd;
 
 		console.log(this.home);
 		console.log(this.cwd);
 		console.log(this.pwd);
-
-		console.log('VFS INIT ', this._getNodeByPathArray(['/', 'home', 'kamil']));
 	}
+	
+	private _iNodeToPathString(inode: number): string {
+		let components: Stack<string> = new Stack<string>();
+		let currentNode = this.FsTable.get(inode);
+		let path: string = ''; 
+		if(!currentNode) throw new Error('iNode does not exist,');
 
-	_splitPathString(path: string): string[] {
-		if (path === '/') return ['/'];
+		components.push(currentNode.name);
 
-		const raw: string[] = path.split('/');
-		const parts: string[] = [];
+		if(!currentNode.parent) {
+			for(let i = 0; i < components.size(); i++) {
+				path += components.pop() + '/';
+			}
 
-		for (let i = 0; i < raw.length; i++) {
-			if (raw[i].length > 0) parts.push(raw[i]);
+		} else {
+			this._iNodeToPathString(currentNode.parent);
 		}
-		return parts;
+
+		return path;
 	}
 
-	_isAbsolutePath = (path: string): boolean => {
+	private _pathStringToINode(path: string): number {
+		const normalizedPath = path.replace(/^\/+|\/+$/g, '');
+		const pathComponents = normalizedPath.split('/').filter(component => component.length > 0);
+
+		if(pathComponents.length === 0) return this.rootINode;
+
+		let currentNode = this.FsTable.get(this.rootINode);
+		if(!currentNode) throw new Error('iNode does not exist,');
+
+		for(const component of pathComponents) {
+			const childINode = this._findChildNodeByName(currentNode, component);
+			if(childINode === null) throw new Error('this child iNode does not exist,');
+
+			const nextNode = this.FsTable.get(childINode);
+			if(!nextNode) throw new Error('iNode child does not exist,');
+
+			currentNode = nextNode;
+		}
+		return currentNode.inode;
+	}
+
+	private _findChildNodeByName(node: TreeNode, name: string): number {
+		for(const childINode of node.children) {
+			const child = this.FsTable.get(childINode);
+			if(child && child.name === name) {
+				return childINode;
+			} 
+		}
+		throw new Error('could not find the specified child node');
+	}
+
+	private _isAbsolutePath = (path: string): boolean => {
 		return typeof path === 'string' && path.startsWith('/');
 	};
 
-	pathArrayToString(path: string[]): string {
-		if (path.length === 1 && path[0] === '/') return '/';
-		return '/' + path.join('/');
-	}
-
 	formatPath(path: string): string {
-		const prefix = this.pathArrayToString(this.home);
+		const prefix = this._iNodeToPathString(this.home);
 		if (path.startsWith(prefix)) {
 			return path.replace(prefix, '~');
 		} else return path;
 	}
 
-	resolvePath(path: string): string[] {
-		if (path === '' || path === undefined || path === null) return this.cwd.slice();
-		if (path.startsWith('/') && path.length === 1) return [];
+	resolvePath(path: string): TreeNode{
+		if(path === '/') return this._getNodeByINode(this.rootINode);
 
-		if (path.startsWith('~')) {
-			const trail: string = path === '~' ? '' : path.slice(1);
-			const home: string = this.pathArrayToString(this.home);
-			path = home + (trail ? (trail.startsWith('/') ? '' : '/') + trail : '');
+		if (!this._isAbsolutePath(path)) {
+			const trail: string = this._iNodeToPathString(this.cwd);
+			path = trail + path;
+
+		}
+		else if (path.startsWith('~')) {
+			const trail: string = this._iNodeToPathString(this.home);
+			path = trail + path
 		}
 
-		const start = this._isAbsolutePath(path) ? [] : this.cwd.slice();
-		const parts = this._splitPathString(path);
+		console.log(path);
 
-		for (let i = 0; i < parts.length; i++) {
-			const seg = parts[i];
+		const INode: number = this._pathStringToINode(path);
+		const Node: TreeNode = this._getNodeByINode(INode);
 
-			if (seg === '.' || seg === '') continue;
-			if (seg === '..') {
-				if (start.length > 1) start.pop();
-				continue;
-			}
-			start.push(seg);
-		}
-
-		if (start.length === 0) return [];
-		console.log('OUTPUT', start);
-		return start;
+		return Node;
 	}
+	
 
-	_getNodeByPathArray(path: string[]): TreeNode | null {
-		if (path.length === 1 && path[0] === '/') return this.root;
-
-		let node: TreeNode = this.root;
-		const parts: string[] = path.slice(path[0] === '/' ? 1 : 0);
-
-		for (let i = 0; i < parts.length; i++) {
-			const seg: string = parts[i];
-
-			if (node.type === Type.File) return node;
-			const newNode = node.children.find((child) => child.name === seg);
-			console.log(newNode);
-			if (newNode !== undefined) node = newNode;
-			else return null;
-		}
-
+	private _getNodeByINode(inode: number): TreeNode {
+		const node: TreeNode | undefined = this.FsTable.get(inode);
+		if(!node) throw new Error('Could not get the node, no such i node exists');
 		return node;
 	}
 
-	_getPathToNode(node: TreeNode): string[] {
+	private _getPathToNode(node: TreeNode): string[] {
 		const path: string[] = [];
 		let current = node;
 		path.push(node.name);

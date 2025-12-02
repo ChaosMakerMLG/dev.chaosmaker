@@ -15,6 +15,12 @@ export type BashInitArgs = {
 	fs: any;
 };
 
+export type TimeStamps = {
+	mTime: Date;
+	cTime: Date;
+	aTime: Date;
+}
+
 // TODO: Finish this
 // TODO: Change into a type instead of an enum for performance (low priority)
 export enum ExitCode {
@@ -29,8 +35,8 @@ export type User = {
 	readonly gid: number; // Primary group | 'Users' 1000 - Others - 1000+ root - 0 //TODO: Make a formated type
 	home: string; //TODO: Make a formated type
 	history: string[];
-	cwd?: string[]; //TODO: Make a formated type
-	pwd?: string[]; //TODO: Make a formated type
+	cwd?: number; //TODO: Make a formated type
+	pwd?: number; //TODO: Make a formated type
 };
 
 export type Group = {
@@ -69,11 +75,11 @@ export class Bash {
 		}
 	}
 
-	getCwd(): string[] {
+	getCwd(): number {
 		return this.vfs.cwd;
 	}
 
-	getPwd(): string[] {
+	getPwd(): number {
 		return this.vfs.pwd;
 	}
 
@@ -87,13 +93,6 @@ export class Bash {
 
 	hasSudoPerms(uid: number): boolean {
 		return this._group[1].members.includes(uid);
-	}
-
-	changeUser(user: User) {
-		this.user = user;
-		this.vfs.home = this.vfs._splitPathString(user.home);
-		this.vfs.cwd = user.cwd ? user.cwd : this.vfs._splitPathString(user.home);
-		this.vfs.pwd = user.pwd ? user.pwd : this.vfs._splitPathString(user.home);
 	}
 
 	executeCommand(commandName: string, args: CommandArgs): void {
@@ -121,23 +120,12 @@ export class Bash {
 		}
 	}
 
-	userLogin(username: string, passwd: string): ExitCode {
-		const user: User | undefined = this._passwd.find((u) => u.username === username);
-		if (user === undefined) return ExitCode.ERROR;
-
-		if (user.passwd === passwd) {
-			this._instances.push(user);
-			this.changeUser(user);
-			return ExitCode.ERROR; //TODO: Make it return the exitcode of changeUser() if needed
-		} else return ExitCode.ERROR;
-	}
-
 	userLogout() {
 		this._instances.pop();
 		if (this._instances.size() === 0) {
 			//TODO: Implement system logout
 		} else {
-			this.changeUser(this._instances.peek()!);
+			//this.changeUser(this._instances.peek()!);
 		}
 	}
 
