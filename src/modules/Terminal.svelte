@@ -64,7 +64,7 @@
 			terminal = await initTerminal(testUser, callbackInit);
 			updateTerminal();
 		} catch (error) {
-			console.error('onMount trycatch failed');
+			console.error('onMount trycatch failed', error);
 		}
 	});
 </script>

@@ -10,19 +10,19 @@ export function isInitializing(): boolean {
 
 function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
 	const FsTable: Map<number, TreeNode> = new Map<number, TreeNode>;
-	const keyList = Object.keys(data);
+	const entryList = Object.entries(data);
 
-	for(const key in keyList) {
-		const object = data[key];
+	for(let i = 0; i < entryList.length; i++) {
+		const object: any = entryList[i][1];
 		const node: TreeNode = {
 			inode: object.Inode,
 			name: object.Name,
 			type: object.Type,
 			interactible: object.Interactible,
 			func: object.Func,
-			children: [],
+			children: object.Children,
 			content: object.Content,
-			link: object.Link || [],
+			link: object.Link,
 			permission: {
 				user: {
 					r: object.Permission[0]?.Read,
@@ -52,7 +52,6 @@ function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
 
 		FsTable.set(object.Inode, node);
 	}
-	console.log(FsTable);
 	return FsTable;
 }
 

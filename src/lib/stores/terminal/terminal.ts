@@ -99,12 +99,13 @@ export class Terminal {
 
 	getCwd(): string {
 		const fs: VirtualFS = this.bash.getFs();
-		return fs.formatPath(fs.pathArrayToString(this.bash.getCwd()));
+		return fs.formatPath(fs.getPathByInode(this.bash.getCwd()));
 	}
 
-	userLogin(username: string, passwd: string): ExitCode {
+	//TODO: Later reimplement the backend helper methods
+	/* userLogin(username: string, passwd: string): ExitCode {
 		return this.bash.userLogin(username, passwd);
-	}
+	} */
 
 	PrintOutput(data: PrintData) {
 		this.callbacks.print?.(data);

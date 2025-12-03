@@ -143,7 +143,7 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 
 			if (nodes.length > 1) {
 				const nodePath: string =
-					node.name === '/' ? '/:' : `${this.getFs()._getPathToNode(node).join('/').slice(1)}:`;
+					node.name === '/' ? '/:' : `${this.getFs().getPathByInode(node.inode).slice(1)}:`;
 				rows.unshift(nodePath);
 				rows.push('\n');
 			}

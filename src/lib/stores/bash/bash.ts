@@ -129,9 +129,9 @@ export class Bash {
 		}
 	}
 
-	private appendNewResult(path: string[], output: any, cmd: string) {
+	private appendNewResult(workingDir: number, output: any, cmd: string) {
 		const data: PrintData = {
-			path: this.vfs.formatPath(this.vfs.pathArrayToString(path)),
+			path: this.vfs.formatPath(this.vfs.getPathByInode(workingDir)),
 			output: output,
 			cmd: cmd
 		};

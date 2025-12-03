@@ -98,6 +98,7 @@ export class VirtualFS {
 	}
 
 	private _findChildNodeByName(node: TreeNode, name: string): number {
+		console.log(name, node);
 		for(const childINode of node.children) {
 			const child = this.FsTable.get(childINode);
 			if(child && child.name === name) {
@@ -110,6 +111,10 @@ export class VirtualFS {
 	private _isAbsolutePath = (path: string): boolean => {
 		return typeof path === 'string' && path.startsWith('/');
 	};
+
+	getPathByInode(inode: number): string {
+		return this._iNodeToPathString(inode);
+	}
 
 	formatPath(path: string): string {
 		const prefix = this._iNodeToPathString(this.home);
@@ -146,7 +151,7 @@ export class VirtualFS {
 		return node;
 	}
 
-	private _getPathToNode(node: TreeNode): string[] {
+	/* private _getPathToNode(node: TreeNode): string[] {
 		const path: string[] = [];
 		let current = node;
 		path.push(node.name);
@@ -157,5 +162,5 @@ export class VirtualFS {
 		}
 
 		return path;
-	}
+	} */
 }
