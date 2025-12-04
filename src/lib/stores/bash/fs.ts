@@ -55,20 +55,19 @@ export class VirtualFS {
 		console.log(this.cwd);
 		console.log(this.pwd);
 	}
-	
+
 	private _iNodeToPathString(inode: number): string {
 		let components: Stack<string> = new Stack<string>();
 		let currentNode = this.FsTable.get(inode);
-		let path: string = ''; 
-		if(!currentNode) throw new Error('iNode does not exist,');
+		let path: string = '';
+		if (!currentNode) throw new Error('iNode does not exist,');
 
 		components.push(currentNode.name);
 
-		if(!currentNode.parent) {
-			for(let i = 0; i < components.size(); i++) {
+		if (!currentNode.parent) {
+			for (let i = 0; i < components.size(); i++) {
 				path += components.pop() + '/';
 			}
-
 		} else {
 			this._iNodeToPathString(currentNode.parent);
 		}
@@ -76,21 +75,24 @@ export class VirtualFS {
 		return path;
 	}
 
+	//TODO: Make all backend methods NOT throw errors. Just return null, and let more closely connected with bash functions call throwError() so user can see the error.
+	// 			this will save a lot of ass pain later.
+
 	private _pathStringToINode(path: string): number {
 		const normalizedPath = path.replace(/^\/+|\/+$/g, '');
-		const pathComponents = normalizedPath.split('/').filter(component => component.length > 0);
+		const pathComponents = normalizedPath.split('/').filter((component) => component.length > 0);
 
-		if(pathComponents.length === 0) return this.rootINode;
+		if (pathComponents.length === 0) return this.rootINode;
 
 		let currentNode = this.FsTable.get(this.rootINode);
-		if(!currentNode) throw new Error('iNode does not exist,');
+		if (!currentNode) throw new Error('iNode does not exist,');
 
-		for(const component of pathComponents) {
+		for (const component of pathComponents) {
 			const childINode = this._findChildNodeByName(currentNode, component);
-			if(childINode === null) throw new Error('this child iNode does not exist,');
+			if (childINode === null) throw new Error('this child iNode does not exist,');
 
 			const nextNode = this.FsTable.get(childINode);
-			if(!nextNode) throw new Error('iNode child does not exist,');
+			if (!nextNode) throw new Error('iNode child does not exist,');
 
 			currentNode = nextNode;
 		}
@@ -99,11 +101,11 @@ export class VirtualFS {
 
 	private _findChildNodeByName(node: TreeNode, name: string): number {
 		console.log(name, node);
-		for(const childINode of node.children) {
+		for (const childINode of node.children) {
 			const child = this.FsTable.get(childINode);
-			if(child && child.name === name) {
+			if (child && child.name === name) {
 				return childINode;
-			} 
+			}
 		}
 		throw new Error('could not find the specified child node');
 	}
@@ -123,31 +125,28 @@ export class VirtualFS {
 		} else return path;
 	}
 
-	resolvePath(path: string): TreeNode{
-		if(path === '/') return this._getNodeByINode(this.rootINode);
+	resolvePath(path: string): TreeNode {
+		if (path === '/') return this.getNodeByINode(this.rootINode);
 
 		if (!this._isAbsolutePath(path)) {
 			const trail: string = this._iNodeToPathString(this.cwd);
 			path = trail + path;
-
-		}
-		else if (path.startsWith('~')) {
+		} else if (path.startsWith('~')) {
 			const trail: string = this._iNodeToPathString(this.home);
-			path = trail + path
+			path = trail + path;
 		}
 
 		console.log(path);
 
 		const INode: number = this._pathStringToINode(path);
-		const Node: TreeNode = this._getNodeByINode(INode);
+		const Node: TreeNode = this.getNodeByINode(INode);
 
 		return Node;
 	}
-	
 
-	private _getNodeByINode(inode: number): TreeNode {
+	getNodeByINode(inode: number): TreeNode {
 		const node: TreeNode | undefined = this.FsTable.get(inode);
-		if(!node) throw new Error('Could not get the node, no such i node exists');
+		if (!node) throw new Error('Could not get the node, no such i node exists');
 		return node;
 	}
 

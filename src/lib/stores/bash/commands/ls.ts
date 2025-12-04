@@ -45,24 +45,18 @@ export const cmd_ls = function (this: Bash, args: CommandArgs): Result {
 	//Check if args contain any nonexistent flags, if so add it to an array and check its length. if 0 no bad flags
 	const invalidItems = args.flags.filter((flag) => !ls.flags.includes(flag));
 	console.log(invalidItems);
+
 	if (invalidItems.length > 0) {
-		this.throwError(result); //No such flag
+		this.throwError(result); //No such flag/s
 	}
 
-	if (args.args.length === 0) {
-		const node = this.getFs()._getNodeByPathArray(this.getFs().cwd);
-		if (node === null) this.throwError(result); //no such path
-
-		nodes.push(node!);
-	}
+	if (args.args.length === 0) nodes.push(this.getFs().getNodeByINode(this.getFs().cwd));
 
 	for (let i = 0; i < args.args.length; i++) {
-		if (args.args.length !== 0) paths.push(this.getFs().resolvePath(args.args[i]));
+		const node = this.getFs().resolvePath(args.args[i]);
+		if (node === null) this.throwError(result); //no such path (i think this will never occur as backed methods have error cases implemented - which is wrong)
 
-		const node = this.getFs()._getNodeByPathArray(paths[i]);
-		if (node === null) this.throwError(result); //no such path
-
-		nodes.push(node!);
+		nodes.push(node);
 	}
 
 	result.exitCode = ExitCode.SUCCESS;
@@ -83,17 +77,19 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 		const w: HTMLElement = document.createElement('div');
 
 		for (const node of nodes) {
-			if (!flagInfo.has('U') && !flagInfo.has('f'))
-				asciiByteQSort(node.children, flagInfo.has('r'));
-
 			const elem: HTMLElement = document.createElement('div');
 			const rows: string[] = [];
+
+			if (!flagInfo.has('U') && !flagInfo.has('f'))
+				asciiByteQSort(node.children, flagInfo.has('r'));
 
 			//TODO: Actually calculate sizes here instead of defining numbers for types of nodes
 			const sizes = node.children.map((child) => (child.type === Type.Directory ? '4096' : '1'));
 			const maxSizeWidth = Math.max(...sizes.map((size) => size.length));
 
-			for (const child of node.children) {
+			for (const inode of node.children) {
+				const child: TreeNode = this.getFs().getNodeByINode(inode);
+
 				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
 
 				const cols: LsEntry = {

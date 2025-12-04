@@ -25,22 +25,14 @@ export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
 		return result;
 	}
 
-	// Change the input STRING path from relative to absolute by replacing ~ with the home directory path
-
-	//TODO: Change that to a global function inside fs class to parse all possible path formats????? already exists, need to verify
-
-	let resolvedPath = path.startsWith('~')
-		? path.replace('~', this.getFs().pathArrayToString(this.getFs().home))
-		: path;
-
 	this.getFs().pwd = this.getFs().cwd;
-	targetNode = this.getFs()._getNodeByPathArray(this.getFs().resolvePath(resolvedPath)); // Conversion from STRING path to ARRAY
+	targetNode = this.getFs().resolvePath(path); // Conversion from STRING path to TREENODE
 
 	if (targetNode === null) return result;
 	if (targetNode.type !== Type.Directory) return result;
 	//if () return ExitCode.ERROR; // Check for read permissions on node and user
 
-	this.getFs().cwd = this.getFs().resolvePath(resolvedPath); // CD was successfull, change current dir to the verified target dir
+	this.getFs().cwd = targetNode.inode; // CD was successfull, change current dir to the verified target dir
 	result.exitCode = ExitCode.SUCCESS;
 	console.log(this.getCwd());
 	return result;
