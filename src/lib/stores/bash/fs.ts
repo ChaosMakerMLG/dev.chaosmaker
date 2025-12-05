@@ -1,12 +1,11 @@
 import type { readonly } from 'svelte/store';
 import type { Permission, TimeStamps, User } from './bash';
 import { Stack } from '../stack';
-import { Pause } from '@lucide/svelte';
 
 export enum Type {
 	Directory = 16384,
 	File = 32768,
-	SymblicLink = 40960
+	SymbolicLink = 40960
 }
 
 export type NodePerms = {
@@ -25,6 +24,7 @@ export type TreeNode = {
 	parent?: number;
 	name: string;
 	type: Type;
+	size: number; //Size in Bytes
 	children: number[];
 	content: string; // GUID of the cache file that contains the file contents.
 	link: number; // Links

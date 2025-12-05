@@ -18,6 +18,7 @@ function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
 			inode: object.Inode,
 			name: object.Name,
 			type: object.Type,
+			size: object.Size,
 			interactible: object.Interactible,
 			func: object.Func,
 			children: object.Children,

@@ -1,6 +1,6 @@
 import { Bash, ExitCode, type Permission } from '../bash';
 import { Type, type NodePerms, type TreeNode } from '../fs';
-import { asciiByteQSort } from '../sort';
+import { Sort } from '../sort';
 import type { CommandArgs, ICommand, Result, resultData } from '../static';
 
 type LsEntry = {
@@ -40,7 +40,6 @@ export const cmd_ls = function (this: Bash, args: CommandArgs): Result {
 	const resultData: resultData = { cmd: 'ls', data: null, args: args };
 	const result: Result = { exitCode: ExitCode.ERROR, data: resultData };
 	const nodes: TreeNode[] = [];
-	const paths: string[][] = [];
 
 	//Check if args contain any nonexistent flags, if so add it to an array and check its length. if 0 no bad flags
 	const invalidItems = args.flags.filter((flag) => !ls.flags.includes(flag));
@@ -81,11 +80,11 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 			const rows: string[] = [];
 
 			if (!flagInfo.has('U') && !flagInfo.has('f'))
-				asciiByteQSort(node.children, flagInfo.has('r'));
+				//TODO: Add sort by option later on
+				Sort.nodeArraySort.call(this, node.children, flagInfo.has('r'));
 
-			//TODO: Actually calculate sizes here instead of defining numbers for types of nodes
-			const sizes = node.children.map((child) => (child.type === Type.Directory ? '4096' : '1'));
-			const maxSizeWidth = Math.max(...sizes.map((size) => size.length));
+			const sizes = node.children.map((child) => (this.getFs().getNodeByINode(child).size));
+			const maxSizeWidth = Math.max(...sizes.map((size) => size));
 
 			for (const inode of node.children) {
 				const child: TreeNode = this.getFs().getNodeByINode(inode);
@@ -113,19 +112,22 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 					modt: formatModtime(node),
 					name: '.'
 				};
-				const parent: LsEntry = node.parent
-					? {
-							perms: formatPermission(node.parent),
-							children: formatChildren(node.parent),
-							owners: formatOwners.call(this, node.parent, flagInfo),
-							size: formatSize.call(this, f_h, node.parent, maxSizeWidth),
-							modt: formatModtime(node.parent),
+				let parent: LsEntry = {
+					...current,
+					name: '..'
+				}
+				if(node.parent) {
+					const parentNode: TreeNode = this.getFs().getNodeByINode(node.parent);
+					parent = {
+						perms: formatPermission(parentNode),
+							children: formatChildren(parentNode),
+							owners: formatOwners.call(this, parentNode, flagInfo),
+							size: formatSize.call(this, f_h, parentNode, maxSizeWidth),
+							modt: formatModtime(parentNode),
 							name: '..'
-						}
-					: {
-							...current,
-							name: '..'
-						};
+					}
+
+				}
 
 				if (flagInfo.has('r')) {
 					rows.push(LsEntryUtils.toString(parent), LsEntryUtils.toString(current));
@@ -170,31 +172,23 @@ function parsePerms(perms: NodePerms): string {
 }
 
 function formatOwners(this: Bash, node: TreeNode, flag: any): string {
-	const owner: string = node.owner;
-	const group: string = node.group;
+	const owner: string = this.getUserByUid(node.owner).username;
+	const group: string = this.getGroupByGid(node.group).groupname;
 
 	if (flag.has('G') || flag.has('o')) {
-		if (flag.has('n')) {
-			const uid: number = this.getUserByName(owner).uid;
-			return `${uid}`;
-		}
+		if (flag.has('n'))
+			return `${node.owner}`;
 		return `${owner}`;
 	}
 
 	if (flag.has('g')) {
-		if (flag.has('n')) {
-			const gid: number = this.getGroupByName(group).gid;
-			return `${gid}`;
-		}
+		if (flag.has('n'))
+			return `${node.group}`;
 		return `${group}`;
 	}
 
-	if (flag.has('n')) {
-		const uid: number = this.getUserByName(owner).uid;
-		const gid: number = this.getGroupByName(group).gid;
-
-		return `${uid} ${gid}`;
-	}
+	if (flag.has('n'))
+		return `${node.owner} ${node.group}`;
 
 	return `${owner} ${group}`;
 }
@@ -220,16 +214,17 @@ function formatSize(this: Bash, human: boolean, node: TreeNode, max: number): st
 
 function formatModtime(node: TreeNode): string {
 	const now = new Date();
-	const hours: string = node.modtime.getHours().toString().padStart(2, '0');
-	const minutes: string = node.modtime.getMinutes().toString().padStart(2, '0');
+	//TODO: Change this to be dynamic based on the --time value passed
+	const hours: string = node.timestamps.mTime.getHours().toString().padStart(2, '0');
+	const minutes: string = node.timestamps.mTime.getMinutes().toString().padStart(2, '0');
 	const time: string =
-		now.getFullYear() === node.modtime.getFullYear()
+		now.getFullYear() === node.timestamps.mTime.getFullYear()
 			? `${hours}:${minutes}`
-			: node.modtime.getFullYear().toString();
+			: node.timestamps.mTime.getFullYear().toString();
 
 	return [
-		months[node.modtime.getMonth()],
-		node.modtime.getDate().toString().padStart(2, ' '),
+		months[node.timestamps.mTime.getMonth()],
+		node.timestamps.mTime.getDate().toString().padStart(2, ' '),
 		`${time}`
 	].join(' ');
 }
