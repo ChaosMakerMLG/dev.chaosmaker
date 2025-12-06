@@ -8,7 +8,7 @@
 		<span class=" pointer self-start pr-2">$</span>
 		<p>{cmd}</p>
 	</div>
-	<div style="white-space: preserve;" class=" relative wrap-break-word">
+	<div style="white-space: nowrap;" class=" relative">
 		{#if typeof output === 'string'}
 			{output}
 		{:else if output instanceof Element}

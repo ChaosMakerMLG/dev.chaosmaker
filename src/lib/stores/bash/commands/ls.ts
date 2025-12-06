@@ -77,17 +77,20 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 
 		for (const node of nodes) {
 			const elem: HTMLElement = document.createElement('div');
+			let children: TreeNode[] = [];
 			const rows: string[] = [];
 
-			if (!flagInfo.has('U') && !flagInfo.has('f'))
+			if (!flagInfo.has('U') && !flagInfo.has('f')) {
 				//TODO: Add sort by option later on
-				Sort.nodeArraySort.call(this, node.children, flagInfo.has('r'));
+				children: TreeNode[] = Sort.nodeArraySort.call(this, node.children, flagInfo.has('r'));
+				console.log('had U or f');
+			}
 
 			const sizes = node.children.map((child) => (this.getFs().getNodeByINode(child).size));
 			const maxSizeWidth = Math.max(...sizes.map((size) => size));
 
-			for (const inode of node.children) {
-				const child: TreeNode = this.getFs().getNodeByINode(inode);
+			for (let i = 0; i < node.children.length; i++) {
+				const child: TreeNode = children[i];
 
 				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
 
@@ -202,10 +205,10 @@ function formatChildren(node: TreeNode): string {
 	return c.length > 1 ? c : ` ${c}`;
 }
 
-function formatSize(this: Bash, human: boolean, node: TreeNode, max: number): string {
+function formatSize(this: Bash, humanReadable: boolean, node: TreeNode, max: number): string {
 	const byteSize: number = node.type === Type.Directory ? 4096 : 1; //TEMP, later calculate the size.
 	let size: string;
-	if (human) {
+	if (humanReadable) {
 		size = this.formatBytes(byteSize);
 	} else size = byteSize.toString();
 

@@ -152,7 +152,6 @@ export class Bash {
 
 	getGroupByName(name: string): Group {
 		const out: Group | undefined = this._group.find((group) => group.groupname === name);
-		console.log(out);
 
 		if (out) return out;
 		else throw new Error(`Cannot find a user group named ${name}`);
@@ -160,7 +159,6 @@ export class Bash {
 
 	getUserByName(name: string): User {
 		const out: User | undefined = this._passwd.find((user) => user.username === name);
-		console.log(out);
 
 		if (out) return out;
 		else throw new Error(`Cannot find a user named ${name}`);
@@ -168,17 +166,15 @@ export class Bash {
 
 	getGroupByGid(gid: number): Group {
 		const out: Group | undefined = this._group.find((group) => group.gid === gid);
-		console.log(out);
 
 		if (out) return out;
-		else throw new Error(`Cannot find a user group named ${name}`);
+		else throw new Error(`Cannot find a user group with id of ${gid}`);
 	}
 
 	getUserByUid(uid: number): User {
 		const out: User | undefined = this._passwd.find((user) => user.uid === uid);
-		console.log(out);
 
 		if (out) return out;
-		else throw new Error(`Cannot find a user group named ${name}`);
+		else throw new Error(`Cannot find a user with id of ${uid}`);
 	}
 }

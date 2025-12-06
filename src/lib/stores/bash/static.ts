@@ -33,7 +33,7 @@ export const GROUP: Group[] = [
 	},
 	{
 		groupname: 'users',
-		gid: 1000,
+		gid: 984,
 		members: [1001, 1002]
 	}
 ] as const;
@@ -50,7 +50,7 @@ export const PASSWD: User[] = [
 	{
 		username: 'admin',
 		passwd: '456',
-		uid: 1001,
+		uid: 1000,
 		gid: 1000,
 		home: '/home/admin',
 		history: [] //TODO: Delete this and declare a new history array when logging the user in.
@@ -58,7 +58,7 @@ export const PASSWD: User[] = [
 	{
 		username: 'user',
 		passwd: '789',
-		uid: 1002,
+		uid: 1001,
 		gid: 1000,
 		home: '/home/user',
 		history: [] //TODO: Delete this and declare a new history array when logging the user in.
@@ -66,7 +66,7 @@ export const PASSWD: User[] = [
 	{
 		username: 'kamil',
 		passwd: '000',
-		uid: 1003,
+		uid: 1002,
 		gid: 1000,
 		home: '/home/kamil',
 		history: [] //TODO: Delete this and declare a new history array when logging the user in.

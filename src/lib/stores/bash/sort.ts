@@ -14,7 +14,7 @@ export enum SortBy {
 
 export class Sort {
 
-	public static nodeArraySort(this: Bash, nodes: TreeNode[] | number[], reverse: boolean = false, sortBy: SortBy = SortBy.NAME) {
+	public static nodeArraySort(this: Bash, nodes: TreeNode[] | number[], reverse: boolean = false, sortBy: SortBy = SortBy.NAME): TreeNode[] {
 		if(nodes.length === 0) throw new Error('Tried to sort an empty node array!');
 		const parsedNodes: TreeNode[] = [];
 		
@@ -24,7 +24,13 @@ export class Sort {
 				parsedNodes.push(node);
 			}
 			Sort.nodeQSort(parsedNodes, reverse, sortBy, 0, parsedNodes.length - 1);
-		} else Sort.nodeQSort(nodes as TreeNode[], reverse, sortBy, 0, nodes.length - 1);
+			console.log(parsedNodes);
+			return parsedNodes;
+		} else {
+			Sort.nodeQSort(nodes as TreeNode[], reverse, sortBy, 0, nodes.length - 1);
+			console.log(nodes);
+			return nodes as TreeNode[];
+		}
 	}
 
 	private static nodeQSort(array: TreeNode[], reverse: boolean, sortBy: SortBy, start: number, end: number) {
