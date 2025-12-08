@@ -66,17 +66,21 @@ export class Terminal {
 
 		for (let i = 0; i < args.length; i++) {
 			let curr = args[i];
+			console.log(curr);
 
-			if (!curr.startsWith('-')) result.args.args.push(curr);
-			else {
+			if (curr.startsWith('--')) {
+				curr = curr.replaceAll('--', '');
+				if (curr.length === 0) continue;
+
+				result.args.flags.push(curr);
+			} else if (curr.startsWith('-')) {
 				curr = curr.replaceAll('-', '');
+				if (curr.length === 0) continue;
 
-				if (curr.length > 0) {
-					for (let n = 0; n < curr.length; n++) {
-						result.args.flags.push(curr[n]);
-					}
+				for (let n = 0; n < curr.length; n++) {
+					result.args.flags.push(curr[n]);
 				}
-			}
+			} else result.args.args.push(curr);
 		}
 
 		return result;

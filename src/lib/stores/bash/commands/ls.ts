@@ -4,6 +4,7 @@ import { Sort } from '../sort';
 import type { CommandArgs, ICommand, Result, resultData } from '../static';
 
 type LsEntry = {
+	inode: number | null;
 	perms: string;
 	children: string;
 	owners: string;
@@ -38,7 +39,7 @@ const months: readonly string[] = [
 
 export const cmd_ls = function (this: Bash, args: CommandArgs): Result {
 	const resultData: resultData = { cmd: 'ls', data: null, args: args };
-	const result: Result = { exitCode: ExitCode.ERROR, data: resultData };
+	const result: Result = { exitCode: ExitCode.ERROR, path: this.getCwd(), data: resultData };
 	const nodes: TreeNode[] = [];
 
 	//Check if args contain any nonexistent flags, if so add it to an array and check its length. if 0 no bad flags
@@ -66,15 +67,28 @@ export const cmd_ls = function (this: Bash, args: CommandArgs): Result {
 function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 	const dummysonoerror: HTMLElement = document.createElement('div');
 
-	const flagInfo = checkFlags(args.flags, ls.flags);
+	const flagInfo = checkFlags(args.flags);
 	const nodes: TreeNode[] = data;
 
-	const f_a: boolean = flagInfo.has('a') || flagInfo.has('f');
-	const f_h: boolean = flagInfo.has('h');
+	const f_a: boolean = flagInfo.has('a') || flagInfo.has('all');
+	const f_A: boolean = flagInfo.has('A') || flagInfo.has('almost-all');
+	const f_G: boolean = flagInfo.has('G') || flagInfo.has('no-group');
+	const f_h: boolean = flagInfo.has('h') || flagInfo.has('human-readable');
+	const f_r: boolean = flagInfo.has('r') || flagInfo.has('reverse');
+	const f_Q: boolean = flagInfo.has('Q') || flagInfo.has('quote-name');
+	const f_n: boolean = flagInfo.has('n') || flagInfo.has('numeric-uid-gid');
+	const f_N: boolean = flagInfo.has('N') || flagInfo.has('literal');
+	const f_L: boolean = flagInfo.has('L') || flagInfo.has('dereference');
+	const f_i: boolean = flagInfo.has('i') || flagInfo.has('inode');
+	const f_help: boolean = flagInfo.has('help');
+	const f_si: boolean = flagInfo.has('si');
+	const f_l: boolean = flagInfo.has('l');
 	const f_U: boolean = flagInfo.has('U');
 	const f_f: boolean = flagInfo.has('f');
+	const f_g: boolean = flagInfo.has('g');
+	const f_o: boolean = flagInfo.has('o');
 
-	if (flagInfo.has('l') || flagInfo.has('g') || flagInfo.has('o')) {
+	if (f_l || f_g || f_o) {
 		const w: HTMLElement = document.createElement('div');
 
 		for (const node of nodes) {
@@ -84,33 +98,37 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 
 			if (!f_U && !f_f) {
 				//TODO: Add sort by option later on
-				Sort.nodeArraySort.call(this, children, flagInfo.has('r'));
+				Sort.nodeArraySort.call(this, children, f_r);
 			}
 
 			const sizes = children.map((child) => child.size);
 			const maxSizeWidth = Math.max(...sizes.map((size) => size));
 
 			for (const child of children) {
-				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
+				if (child.name.startsWith('.') && !(f_a || f_A)) continue;
 
 				const cols: LsEntry = {
+					inode: null,
 					perms: formatPermission(child),
 					children: formatChildren(child),
 					owners: formatOwners.call(this, child, flagInfo),
-					size: formatSize.call(this, f_h, child, maxSizeWidth),
+					size: formatSize.call(this, f_h, child, maxSizeWidth, f_si),
 					modt: formatModtime(child),
 					name: formatName(child, flagInfo)
 				};
 
+				if (f_i) cols.inode = child.inode;
+
 				rows.push(LsEntryUtils.toString(cols));
 			}
 
-			if (f_a && !flagInfo.has('A')) {
+			if (f_a && !f_A) {
 				const current: LsEntry = {
+					inode: null,
 					perms: formatPermission(node),
 					children: formatChildren(node),
 					owners: formatOwners.call(this, node, flagInfo),
-					size: formatSize.call(this, f_h, node, maxSizeWidth),
+					size: formatSize.call(this, f_h, node, maxSizeWidth, f_si),
 					modt: formatModtime(node),
 					name: '.'
 				};
@@ -121,16 +139,22 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 				if (node.parent) {
 					const parentNode: TreeNode = this.getFs().getNodeByINode(node.parent);
 					parent = {
+						inode: null,
 						perms: formatPermission(parentNode),
 						children: formatChildren(parentNode),
 						owners: formatOwners.call(this, parentNode, flagInfo),
-						size: formatSize.call(this, f_h, parentNode, maxSizeWidth),
+						size: formatSize.call(this, f_h, parentNode, maxSizeWidth, f_si),
 						modt: formatModtime(parentNode),
 						name: '..'
 					};
 				}
 
-				if (flagInfo.has('r')) {
+				if (f_i) {
+					current.inode = node.inode;
+					parent.inode = node.parent ? node.parent : node.inode;
+				}
+
+				if (f_r) {
 					rows.push(LsEntryUtils.toString(parent), LsEntryUtils.toString(current));
 				} else {
 					rows.unshift(LsEntryUtils.toString(current), LsEntryUtils.toString(parent));
@@ -203,12 +227,17 @@ function formatChildren(node: TreeNode): string {
 	return c.length > 1 ? c : ` ${c}`;
 }
 
-function formatSize(this: Bash, humanReadable: boolean, node: TreeNode, max: number): string {
-	const byteSize: number = node.type === Type.Directory ? 4096 : 1; //TEMP, later calculate the size.
+function formatSize(
+	this: Bash,
+	humanReadable: boolean,
+	node: TreeNode,
+	max: number,
+	f_si: boolean
+): string {
 	let size: string;
 	if (humanReadable) {
-		size = this.formatBytes(byteSize);
-	} else size = byteSize.toString();
+		size = this.formatBytes(node.size, 1, f_si ? 1000 : 1024);
+	} else size = node.size.toString();
 
 	return size.padStart(max, ' ');
 }
@@ -243,7 +272,7 @@ function formatName(node: TreeNode, flag: any) {
 	return flag.has('p') && node.type === Type.Directory ? `${name}/` : name;
 }
 
-const checkFlags = (pFlags: string[], dFlags: string[]) => {
+const checkFlags = (pFlags: string[]) => {
 	const flagSet = new Set(pFlags);
 
 	return { has: (flag: string) => flagSet.has(flag) };
@@ -273,7 +302,23 @@ export const ls: ICommand = {
 		'n',
 		'N',
 		'L',
-		'm'
+		'm',
+		'i',
+		'sort',
+		'time',
+		'help',
+		'all',
+		'almost-all',
+		'no-group',
+		'human-readable',
+		'reverse',
+		'quote-name',
+		'indicator-style',
+		'literal',
+		'numeric-uid-gid',
+		'inode',
+		'si',
+		'dereference'
 	] as string[],
 	help: 'PATH TO HELP.MD',
 	root: false

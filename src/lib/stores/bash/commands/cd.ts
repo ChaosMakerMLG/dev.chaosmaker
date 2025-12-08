@@ -3,7 +3,7 @@ import { Type, type TreeNode } from '../fs';
 import type { CommandArgs, ICommand, Result } from '../static';
 
 export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
-	let result: Result = { exitCode: ExitCode.ERROR };
+	let result: Result = { exitCode: ExitCode.ERROR, path: this.getCwd() };
 	const path = args.args[0];
 	let targetNode: TreeNode | null;
 

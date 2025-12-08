@@ -22,6 +22,7 @@ export type resultData = {
 
 export type Result = {
 	exitCode: ExitCode;
+	path: number; //the inode of the place that the command was executed in
 	data?: resultData;
 };
 
@@ -73,18 +74,7 @@ export const PASSWD: User[] = [
 	}
 ];
 
-export const cmd_return = function (this: Bash, args: CommandArgs): Result {
-	let result: Result = { exitCode: ExitCode.ERROR };
-	return result;
-};
-
 export const COMMANDS = {
-	return: {
-		method: cmd_return,
-		flags: [] as string[],
-		help: 'PATH TO HELP.MD',
-		root: false
-	},
 	cd,
 	ls
 } as const satisfies Record<string, ICommand>;

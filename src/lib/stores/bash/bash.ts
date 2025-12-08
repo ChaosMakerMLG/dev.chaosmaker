@@ -96,7 +96,7 @@ export class Bash {
 	}
 
 	executeCommand(commandName: string, args: CommandArgs): void {
-		let result: Result = { exitCode: ExitCode.ERROR };
+		let result: Result = { exitCode: ExitCode.ERROR, path: this.getCwd() };
 		const command = this._commands[commandName];
 		if (!command) this.throwError(result);
 
@@ -110,7 +110,7 @@ export class Bash {
 
 		let out: Result = command.method.call(this, args);
 		console.log(out);
-		this.appendNewResult(this.getCwd(), out.data?.data, this.user.history[0]);
+		this.appendNewResult(out.path, out.data?.data, this.user.history[0]);
 	}
 
 	throwError(result: Result): void {
@@ -130,9 +130,9 @@ export class Bash {
 		}
 	}
 
-	private appendNewResult(workingDir: number, output: any, cmd: string) {
+	private appendNewResult(inode: number, output: any, cmd: string) {
 		const data: PrintData = {
-			path: this.vfs.formatPath(this.vfs.getPathByInode(workingDir)),
+			path: this.vfs.formatPath(this.vfs.getPathByInode(inode)),
 			output: output,
 			cmd: cmd
 		};
@@ -140,10 +140,10 @@ export class Bash {
 		this._terminal.PrintOutput(data);
 	}
 
-	formatBytes(bytes: number, dPoint?: number): string {
+	formatBytes(bytes: number, dPoint?: number, pow: 1024 | 1000 = 1024): string {
 		if (!+bytes) return '0';
 
-		const k: number = 1024;
+		const k: number = pow;
 		const dp: number = dPoint ? (dPoint < 0 ? 0 : dPoint) : 1;
 		const units: string[] = ['', 'K', 'M', 'G', 'T', 'P'];
 
