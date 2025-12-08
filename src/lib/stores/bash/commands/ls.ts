@@ -71,27 +71,26 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 
 	const f_a: boolean = flagInfo.has('a') || flagInfo.has('f');
 	const f_h: boolean = flagInfo.has('h');
+	const f_U: boolean = flagInfo.has('U');
+	const f_f: boolean = flagInfo.has('f');
 
 	if (flagInfo.has('l') || flagInfo.has('g') || flagInfo.has('o')) {
 		const w: HTMLElement = document.createElement('div');
 
 		for (const node of nodes) {
 			const elem: HTMLElement = document.createElement('div');
-			let children: TreeNode[] = [];
+			const children: TreeNode[] = node.children.map((child) => this.getFs().getNodeByINode(child));
 			const rows: string[] = [];
 
-			if (!flagInfo.has('U') && !flagInfo.has('f')) {
+			if (!f_U && !f_f) {
 				//TODO: Add sort by option later on
-				children: TreeNode[] = Sort.nodeArraySort.call(this, node.children, flagInfo.has('r'));
-				console.log('had U or f');
+				Sort.nodeArraySort.call(this, children, flagInfo.has('r'));
 			}
 
-			const sizes = node.children.map((child) => (this.getFs().getNodeByINode(child).size));
+			const sizes = children.map((child) => child.size);
 			const maxSizeWidth = Math.max(...sizes.map((size) => size));
 
-			for (let i = 0; i < node.children.length; i++) {
-				const child: TreeNode = children[i];
-
+			for (const child of children) {
 				if (child.name.startsWith('.') && !(f_a || flagInfo.has('A'))) continue;
 
 				const cols: LsEntry = {
@@ -118,18 +117,17 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 				let parent: LsEntry = {
 					...current,
 					name: '..'
-				}
-				if(node.parent) {
+				};
+				if (node.parent) {
 					const parentNode: TreeNode = this.getFs().getNodeByINode(node.parent);
 					parent = {
 						perms: formatPermission(parentNode),
-							children: formatChildren(parentNode),
-							owners: formatOwners.call(this, parentNode, flagInfo),
-							size: formatSize.call(this, f_h, parentNode, maxSizeWidth),
-							modt: formatModtime(parentNode),
-							name: '..'
-					}
-
+						children: formatChildren(parentNode),
+						owners: formatOwners.call(this, parentNode, flagInfo),
+						size: formatSize.call(this, f_h, parentNode, maxSizeWidth),
+						modt: formatModtime(parentNode),
+						name: '..'
+					};
 				}
 
 				if (flagInfo.has('r')) {
@@ -179,19 +177,16 @@ function formatOwners(this: Bash, node: TreeNode, flag: any): string {
 	const group: string = this.getGroupByGid(node.group).groupname;
 
 	if (flag.has('G') || flag.has('o')) {
-		if (flag.has('n'))
-			return `${node.owner}`;
+		if (flag.has('n')) return `${node.owner}`;
 		return `${owner}`;
 	}
 
 	if (flag.has('g')) {
-		if (flag.has('n'))
-			return `${node.group}`;
+		if (flag.has('n')) return `${node.group}`;
 		return `${group}`;
 	}
 
-	if (flag.has('n'))
-		return `${node.owner} ${node.group}`;
+	if (flag.has('n')) return `${node.owner} ${node.group}`;
 
 	return `${owner} ${group}`;
 }
@@ -201,6 +196,9 @@ function formatPermission(node: TreeNode): string {
 }
 
 function formatChildren(node: TreeNode): string {
+	if (node.type !== Type.Directory) return ' 0';
+	if (!node.children) throw new Error('children array is null on this node');
+
 	const c = node.children.length.toString();
 	return c.length > 1 ? c : ` ${c}`;
 }

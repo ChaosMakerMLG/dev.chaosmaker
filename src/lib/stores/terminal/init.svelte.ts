@@ -9,10 +9,10 @@ export function isInitializing(): boolean {
 }
 
 function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
-	const FsTable: Map<number, TreeNode> = new Map<number, TreeNode>;
+	const FsTable: Map<number, TreeNode> = new Map<number, TreeNode>();
 	const entryList = Object.entries(data);
 
-	for(let i = 0; i < entryList.length; i++) {
+	for (let i = 0; i < entryList.length; i++) {
 		const object: any = entryList[i][1];
 		const node: TreeNode = {
 			inode: object.Inode,
@@ -48,7 +48,7 @@ function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
 				cTime: new Date(object.TimeStamps.CTime),
 				aTime: new Date(object.TimeStamps.ATime)
 			},
-			parent: object.parent
+			parent: object.Parent
 		};
 
 		FsTable.set(object.Inode, node);

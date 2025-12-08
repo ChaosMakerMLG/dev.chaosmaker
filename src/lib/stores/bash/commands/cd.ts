@@ -27,6 +27,7 @@ export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
 
 	this.getFs().pwd = this.getFs().cwd;
 	targetNode = this.getFs().resolvePath(path); // Conversion from STRING path to TREENODE
+	console.log(targetNode, path, 'CD OUTPUT');
 
 	if (targetNode === null) return result;
 	if (targetNode.type !== Type.Directory) return result;
@@ -34,7 +35,6 @@ export const cmd_cd = function (this: Bash, args: CommandArgs): Result {
 
 	this.getFs().cwd = targetNode.inode; // CD was successfull, change current dir to the verified target dir
 	result.exitCode = ExitCode.SUCCESS;
-	console.log(this.getCwd());
 	return result;
 };
 

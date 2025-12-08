@@ -19,7 +19,7 @@ export type TimeStamps = {
 	mTime: Date;
 	cTime: Date;
 	aTime: Date;
-}
+};
 
 // TODO: Finish this
 // TODO: Change into a type instead of an enum for performance (low priority)
@@ -103,13 +103,14 @@ export class Bash {
 		if (command.root) {
 			if (this.hasSudoPerms(this.user.uid)) {
 				let out: Result = command.method.call(this, args);
-				this.appendNewResult(this.getPwd(), out, this.user.history[0]);
+				this.appendNewResult(this.getCwd(), out, this.user.history[0]);
 			}
 			this.throwError(result);
 		}
 
 		let out: Result = command.method.call(this, args);
-		this.appendNewResult(this.getPwd(), out.data?.data, this.user.history[0]);
+		console.log(out);
+		this.appendNewResult(this.getCwd(), out.data?.data, this.user.history[0]);
 	}
 
 	throwError(result: Result): void {
@@ -135,6 +136,7 @@ export class Bash {
 			output: output,
 			cmd: cmd
 		};
+		console.log(data);
 		this._terminal.PrintOutput(data);
 	}
 

@@ -1,6 +1,4 @@
-import type { readonly } from 'svelte/store';
 import type { Permission, TimeStamps, User } from './bash';
-import { Stack } from '../stack';
 
 export enum Type {
 	Directory = 16384,
@@ -57,22 +55,16 @@ export class VirtualFS {
 	}
 
 	private _iNodeToPathString(inode: number): string {
-		let components: Stack<string> = new Stack<string>();
-		let currentNode = this.FsTable.get(inode);
-		let path: string = '';
-		if (!currentNode) throw new Error('iNode does not exist,');
-
-		components.push(currentNode.name);
+		const currentNode = this.FsTable.get(inode);
+		if (!currentNode)
+			throw new Error('could not find the node in the fs table - inodetopathstring');
 
 		if (!currentNode.parent) {
-			for (let i = 0; i < components.size(); i++) {
-				path += components.pop() + '/';
-			}
-		} else {
-			this._iNodeToPathString(currentNode.parent);
+			return '/';
 		}
 
-		return path;
+		const parentPath: string = this._iNodeToPathString(currentNode.parent);
+		return parentPath === '/' ? `/${currentNode.name}` : `${parentPath}/${currentNode.name}`;
 	}
 
 	//TODO: Make all backend methods NOT throw errors. Just return null, and let more closely connected with bash functions call throwError() so user can see the error.
@@ -81,6 +73,8 @@ export class VirtualFS {
 	private _pathStringToINode(path: string): number {
 		const normalizedPath = path.replace(/^\/+|\/+$/g, '');
 		const pathComponents = normalizedPath.split('/').filter((component) => component.length > 0);
+
+		console.log(path, 'pathstringtoinode');
 
 		if (pathComponents.length === 0) return this.rootINode;
 
@@ -96,6 +90,8 @@ export class VirtualFS {
 
 			currentNode = nextNode;
 		}
+
+		console.log(path, currentNode.inode);
 		return currentNode.inode;
 	}
 
@@ -119,7 +115,9 @@ export class VirtualFS {
 	}
 
 	formatPath(path: string): string {
+		console.log(path, 'formatPath');
 		const prefix = this._iNodeToPathString(this.home);
+
 		if (path.startsWith(prefix)) {
 			return path.replace(prefix, '~');
 		} else return path;
@@ -127,18 +125,20 @@ export class VirtualFS {
 
 	resolvePath(path: string): TreeNode {
 		if (path === '/') return this.getNodeByINode(this.rootINode);
+		let parsedPath: string = path;
 
 		if (!this._isAbsolutePath(path)) {
 			const trail: string = this._iNodeToPathString(this.cwd);
-			path = trail + path;
-		} else if (path.startsWith('~')) {
+			parsedPath = `${trail}/${path}`;
+			console.log(parsedPath);
+		}
+		if (path.startsWith('~')) {
 			const trail: string = this._iNodeToPathString(this.home);
-			path = trail + path;
+			parsedPath = `${trail}/${path.replace('~', '')}`;
+			console.log(parsedPath);
 		}
 
-		console.log(path);
-
-		const INode: number = this._pathStringToINode(path);
+		const INode: number = this._pathStringToINode(parsedPath);
 		const Node: TreeNode = this.getNodeByINode(INode);
 
 		return Node;

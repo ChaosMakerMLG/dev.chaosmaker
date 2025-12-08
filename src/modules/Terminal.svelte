@@ -19,6 +19,7 @@
 		switch (e.key) {
 			case 'Enter': {
 				terminal.executeCommand(inputValue);
+				updateTerminal();
 				break;
 			}
 			case 'ArrowRight': {

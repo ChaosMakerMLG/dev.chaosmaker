@@ -85,7 +85,7 @@ export class Terminal {
 	executeCommand(input: string): void {
 		this.bash.updateHistory(input);
 		const parsed: ParsedInput = this._parseInput(input);
-		console.log(parsed);
+		console.log(parsed, 'executeCommand output');
 		this.bash.executeCommand(parsed.command, parsed.args);
 	}
 
@@ -99,6 +99,7 @@ export class Terminal {
 
 	getCwd(): string {
 		const fs: VirtualFS = this.bash.getFs();
+		console.log(fs.getPathByInode(this.bash.getCwd()));
 		return fs.formatPath(fs.getPathByInode(this.bash.getCwd()));
 	}
 
