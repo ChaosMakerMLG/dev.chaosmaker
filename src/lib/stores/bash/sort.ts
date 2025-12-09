@@ -2,14 +2,14 @@ import type { TreeNode } from './fs';
 import type { Bash } from './bash';
 
 export enum SortNodeBy {
-	NAME,
-	INODE,
-	SIZE,
-	EXTENSION,
-	TYPE,
-	MTIME = 'mTime',
-	ATIME = 'aTime',
-	CTIME = 'cTime'
+	NAME = 'name',
+	INODE = 'inode',
+	SIZE = 'size',
+	EXTENSION = 'extension',
+	TYPE = 'type',
+	MTIME = 'modified',
+	ATIME = 'accessed',
+	CTIME = 'changed'
 }
 
 export class Sort {
@@ -100,6 +100,7 @@ export class Sort {
 			case SortNodeBy.MTIME:
 			case SortNodeBy.ATIME:
 			case SortNodeBy.CTIME: {
+				console.log(sortBy, 'sortby');
 				// The sortBy serves as the lookup key in the timestamps object.
 				// It works because the times in SortBy enum have assigned values matching the names of the keys in the TreeNode object
 				const timeA: number = a.timestamps[sortBy].getTime();

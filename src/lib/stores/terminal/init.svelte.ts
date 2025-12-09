@@ -44,9 +44,9 @@ function jsonToNodeTable(data: any, parent?: number): Map<number, TreeNode> {
 			owner: object.Owner,
 			group: object.Group,
 			timestamps: {
-				mTime: new Date(object.TimeStamps.MTime),
-				cTime: new Date(object.TimeStamps.CTime),
-				aTime: new Date(object.TimeStamps.ATime)
+				modified: new Date(object.TimeStamps.MTime),
+				changed: new Date(object.TimeStamps.CTime),
+				accessed: new Date(object.TimeStamps.ATime)
 			},
 			parent: object.Parent
 		};

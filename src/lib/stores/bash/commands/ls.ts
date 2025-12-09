@@ -1,6 +1,6 @@
-import { Bash, ExitCode, type Permission } from '../bash';
+import { Bash, ExitCode, type Permission, type TimeStamps } from '../bash';
 import { Type, type NodePerms, type TreeNode } from '../fs';
-import { Sort } from '../sort';
+import { Sort, SortNodeBy } from '../sort';
 import type { CommandArgs, ICommand, Result, resultData } from '../static';
 
 type LsEntry = {
@@ -42,11 +42,16 @@ export const cmd_ls = function (this: Bash, args: CommandArgs): Result {
 	const result: Result = { exitCode: ExitCode.ERROR, path: this.getCwd(), data: resultData };
 	const nodes: TreeNode[] = [];
 
-	//Check if args contain any nonexistent flags, if so add it to an array and check its length. if 0 no bad flags
-	const invalidItems = args.flags.filter((flag) => !ls.flags.includes(flag));
-	console.log(invalidItems);
+	//Check if any args contain the long flags with value and are valid flags inside the ls const
+	const valuedArgs = args.flags.filter((flag: string) =>
+		 flag.includes('=') && ls.flags.includes(flag.split('=')[0]));
+	console.log(valuedArgs);
 
-	if (invalidItems.length > 0) {
+	//Check if args contain any nonexistent flags, if so add it to an array and check its length. if 0 no bad flags
+	const invalidArgs = args.flags.filter((flag) => !ls.flags.includes(flag) && !valuedArgs.includes(flag));
+	console.log(invalidArgs);
+
+	if (invalidArgs.length > 0) {
 		this.throwError(result); //No such flag/s
 	}
 
@@ -82,11 +87,19 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 	const f_i: boolean = flagInfo.has('i') || flagInfo.has('inode');
 	const f_help: boolean = flagInfo.has('help');
 	const f_si: boolean = flagInfo.has('si');
+	const f_X: boolean = flagInfo.has('X');
+	const f_S: boolean = flagInfo.has('S');
+	const f_t: boolean = flagInfo.has('t');
 	const f_l: boolean = flagInfo.has('l');
 	const f_U: boolean = flagInfo.has('U');
 	const f_f: boolean = flagInfo.has('f');
 	const f_g: boolean = flagInfo.has('g');
 	const f_o: boolean = flagInfo.has('o');
+
+	let shouldShift: boolean = false
+
+	const valuedArgs = args.flags.filter((flag: string) =>
+		 flag.includes('=') && ls.flags.includes(flag.split('=')[0]));
 
 	if (f_l || f_g || f_o) {
 		const w: HTMLElement = document.createElement('div');
@@ -96,9 +109,31 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 			const children: TreeNode[] = node.children.map((child) => this.getFs().getNodeByINode(child));
 			const rows: string[] = [];
 
+			const timeArg = valuedArgs.find((flag) => flag.startsWith('time'));
+			let timestamp: SortNodeBy.ATIME | SortNodeBy.CTIME | SortNodeBy.MTIME = SortNodeBy.MTIME;
+			if(timeArg) {
+				let value: string = timeArg.split('=')[1];
+				if (value && isValidNodeTimestamp(value)) {
+					timestamp = value;
+					console.log(timestamp);
+				}
+			}
+
 			if (!f_U && !f_f) {
-				//TODO: Add sort by option later on
-				Sort.nodeArraySort.call(this, children, f_r);
+				const sortArg = valuedArgs.find((flag) => flag.startsWith('sort'));
+				let sortBy: SortNodeBy = SortNodeBy.NAME;
+				if(f_t) sortBy = timestamp;
+				if(f_S) sortBy = SortNodeBy.SIZE;
+				if(f_X) sortBy = SortNodeBy.EXTENSION;
+				if(sortArg) {
+					let value = sortArg.split('=')[1];
+					if(value && isValidNodeSortMethod(value)) {
+						sortBy = value;
+						console.log(sortBy, 'sortBy');
+					}
+				}
+
+				Sort.nodeArraySort.call(this, children, f_r, sortBy);
 			}
 
 			const sizes = children.map((child) => child.size);
@@ -113,8 +148,8 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 					children: formatChildren(child),
 					owners: formatOwners.call(this, child, flagInfo),
 					size: formatSize.call(this, f_h, child, maxSizeWidth, f_si),
-					modt: formatModtime(child),
-					name: formatName(child, flagInfo)
+					modt: formatModtime(child, timestamp),
+					name: formatName(child, flagInfo, shouldShift)
 				};
 
 				if (f_i) cols.inode = child.inode;
@@ -129,7 +164,7 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 					children: formatChildren(node),
 					owners: formatOwners.call(this, node, flagInfo),
 					size: formatSize.call(this, f_h, node, maxSizeWidth, f_si),
-					modt: formatModtime(node),
+					modt: formatModtime(node, timestamp),
 					name: '.'
 				};
 				let parent: LsEntry = {
@@ -144,7 +179,7 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 						children: formatChildren(parentNode),
 						owners: formatOwners.call(this, parentNode, flagInfo),
 						size: formatSize.call(this, f_h, parentNode, maxSizeWidth, f_si),
-						modt: formatModtime(parentNode),
+						modt: formatModtime(parentNode, timestamp),
 						name: '..'
 					};
 				}
@@ -171,8 +206,19 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 				rows.push('\n');
 			}
 
+			if(shouldShift) {
+					for(const row of rows) {
+						const name: string = row[row.length - 1];
+						if(!name.startsWith('"') || !name.startsWith("'")) 
+							name.padStart(1, ' ');
+						else continue;
+					}
+				}
+
 			for (let i = 0; i < rows.length; i++) {
 				const p: HTMLElement = document.createElement('p');
+				
+
 				p.innerText = rows[i];
 
 				elem.appendChild(p);
@@ -184,6 +230,14 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 	}
 
 	return dummysonoerror; //TEMP SO NO ERROR CUZ RETURNS HTMLElement EVERY TIME, DELETE LATER
+}
+
+function isValidNodeSortMethod(value: string): value is SortNodeBy {
+	return Object.values(SortNodeBy).includes(value as SortNodeBy);
+}
+
+function isValidNodeTimestamp(value: string): value is SortNodeBy.ATIME | SortNodeBy.CTIME | SortNodeBy.MTIME {
+	return Object.values(SortNodeBy).includes(value as SortNodeBy.ATIME | SortNodeBy.CTIME | SortNodeBy.MTIME);
 }
 
 function parsePerms(perms: NodePerms): string {
@@ -242,31 +296,32 @@ function formatSize(
 	return size.padStart(max, ' ');
 }
 
-function formatModtime(node: TreeNode): string {
+function formatModtime(node: TreeNode, sortBy: SortNodeBy.ATIME | SortNodeBy.CTIME | SortNodeBy.MTIME): string {
 	const now = new Date();
 	//TODO: Change this to be dynamic based on the --time value passed
-	const hours: string = node.timestamps.mTime.getHours().toString().padStart(2, '0');
-	const minutes: string = node.timestamps.mTime.getMinutes().toString().padStart(2, '0');
+	const hours: string = node.timestamps[sortBy].getHours().toString().padStart(2, '0');
+	const minutes: string = node.timestamps[sortBy].getMinutes().toString().padStart(2, '0');
 	const time: string =
-		now.getFullYear() === node.timestamps.mTime.getFullYear()
+		now.getFullYear() === node.timestamps[sortBy].getFullYear()
 			? `${hours}:${minutes}`
-			: node.timestamps.mTime.getFullYear().toString();
+			: node.timestamps[sortBy].getFullYear().toString();
 
 	return [
-		months[node.timestamps.mTime.getMonth()],
-		node.timestamps.mTime.getDate().toString().padStart(2, ' '),
+		months[node.timestamps[sortBy].getMonth()],
+		node.timestamps[sortBy].getDate().toString().padStart(2, ' '),
 		`${time}`
 	].join(' ');
 }
 
-function formatName(node: TreeNode, flag: any) {
+function formatName(node: TreeNode, flag: any, shouldShift: boolean) {
 	let name: string;
 	const char: string = flag.has('Q') ? '"' : "'";
 
-	if (flag.has('N')) {
-		name = node.name;
+	if (/\s/.test(node.name)) {
+		name = `${char}${node.name}${char}`
+		shouldShift = true;
 	} else {
-		name = /\s/.test(node.name) ? `${char}${node.name}${char}` : `${node.name}`; //test if any spaces specifically '\s' (escape and 's' for space)
+		name = `${node.name}`;
 	}
 
 	return flag.has('p') && node.type === Type.Directory ? `${name}/` : name;

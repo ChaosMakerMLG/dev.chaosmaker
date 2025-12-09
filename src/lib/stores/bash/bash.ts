@@ -16,9 +16,9 @@ export type BashInitArgs = {
 };
 
 export type TimeStamps = {
-	mTime: Date;
-	cTime: Date;
-	aTime: Date;
+	modified: Date;
+	changed: Date;
+	accessed: Date;
 };
 
 // TODO: Finish this
