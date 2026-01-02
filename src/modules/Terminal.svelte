@@ -15,6 +15,16 @@
 		cwd = terminal!.getCwd();
 	}
 
+	function getWidth() {
+		const e = document.getElementById('cout');
+		if(!e){
+			throw new Error('cant get width of the teminal element. Its null');
+		}
+		const padding: number = parseInt(window.getComputedStyle(e, null).getPropertyValue('padding').slice(0, -2));
+		console.log(padding);
+		return e.clientWidth - (padding * 2);
+	}
+
 	function handleInput(e: KeyboardEvent) {
 		switch (e.key) {
 			case 'Enter': {
@@ -42,7 +52,8 @@
 			const e = document.getElementById('outputWrapper');
 			if (!e) return;
 			printOutput(e, data);
-		}
+		},
+		getWidth: getWidth
 	};
 
 	let testUser: User = {

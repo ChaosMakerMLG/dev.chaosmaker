@@ -91,6 +91,10 @@ export class Bash {
 		return this.vfs;
 	}
 
+	getTerminalWidth(): number {
+		return this._terminal.getTerminalWidth();
+	}
+
 	hasSudoPerms(uid: number): boolean {
 		return this._group[1].members.includes(uid);
 	}

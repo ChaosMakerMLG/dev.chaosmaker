@@ -22,6 +22,7 @@ export type PrintData = {
 
 export type PageCallbacks = {
 	print: (data: PrintData) => void;
+	getWidth: () => number;
 };
 
 export class Terminal {
@@ -84,6 +85,14 @@ export class Terminal {
 		}
 
 		return result;
+	}
+
+	getTerminalWidth(): number {
+		const width = this.callbacks.getWidth?.();
+		if(!width) { throw new Error('somehow width is undefined still after all the checks'); }
+
+		console.log(width);
+		return width;
 	}
 
 	executeCommand(input: string): void {

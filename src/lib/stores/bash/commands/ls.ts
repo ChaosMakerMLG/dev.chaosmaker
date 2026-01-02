@@ -206,14 +206,12 @@ function result_ls(this: Bash, data: any, args: CommandArgs): HTMLElement {
 				rows.push('\n');
 			}
 
-			if(shouldShift) {
-					for(const row of rows) {
-						const name: string = row[row.length - 1];
-						if(!name.startsWith('"') || !name.startsWith("'")) 
-							name.padStart(1, ' ');
-						else continue;
-					}
-				}
+			for(const row of rows) {
+				const name: string = row[row.length - 1];
+				if(!name.startsWith('"') || !name.startsWith("'")) 
+					name.padStart(1, ' ');
+				else continue;
+			}
 
 			for (let i = 0; i < rows.length; i++) {
 				const p: HTMLElement = document.createElement('p');
@@ -270,7 +268,16 @@ function formatOwners(this: Bash, node: TreeNode, flag: any): string {
 }
 
 function formatPermission(node: TreeNode): string {
-	return `${node.type === Type.Directory ? 'd' : '-'}${parsePerms(node.permission)}`;
+	switch(node.type) {
+		case Type.Directory:
+			return `d${parsePerms(node.permission)}`;
+		case Type.File:
+			return `-${parsePerms(node.permission)}`;
+		case Type.SymbolicLink:
+			return `l${parsePerms(node.permission)}`;
+		default:
+			throw new Error(`Node of unexpected type - ${node.type}`);
+	}
 }
 
 function formatChildren(node: TreeNode): string {
